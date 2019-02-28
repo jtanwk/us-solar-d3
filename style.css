@@ -1,0 +1,122 @@
+@font-face {
+    font-family: "Asap";
+    src: url("lib/fonts/Asap-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Asap SemiBold";
+    src: url("lib/fonts/Asap-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "Asap Italic";
+    src: url("lib/fonts/Asap-Italic.ttf");
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    font-family: sans-serif;
+}
+
+#errMsg {
+    font-size: 24px;
+    font-family: "Asap SemiBold"
+}
+
+.plotArea {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.points {
+    stroke: #000000;
+}
+
+.West {
+    fill: #DDDDDD;
+}
+
+.Northeast {
+    fill: #5D2BF0;
+}
+
+.selectedPoint {
+    fill: #FF0000;
+}
+
+.chartTitle {
+    font-size: 16px;
+    font-family: "Asap SemiBold", sans-serif;
+    color: #0F0F0F;
+}
+
+.subTitle1,
+.subTitle2 {
+    font-family: "Asap";
+    font-size: 12px;
+    color: #3F3F3F;
+}
+
+.axis {
+    font-family: "Asap";
+    font-size: 10px;
+}
+
+.xLabel,
+.yLabel {
+    font-family: "Asap SemiBold";
+    font-size: 12px;
+}
+
+.captionText {
+    font-family: "Asap Italic";
+    font-size: 8px;
+}
+
+.legendTitle {
+    font-family: "Asap Semibold";
+    font-size: 12px;
+    color: #3F3F3F;
+}
+
+.legendTextNE,
+.legendTextW {
+    font-family: "Asap";
+    font-size: 12px;
+}
+
+.grid line {
+    stroke: #DDDDDD;
+    stroke-opacity: 0.5;
+}
+
+.grid path {
+    stroke-width: 0;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    dominant-baseline: central;
+
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+
+    font-family: "Asap";
+    font-size: 12px;
+    background: #FFFFFF;
+
+    border: 1px;
+    pointer-events: none;
+}
