@@ -33,7 +33,7 @@ Promise.all([
                 'Wind, Utility': {column: 'windutility'}
             }, {xAxis: 'year', yAxis: 'total_btu'})
 
-            return makePlot1(data);
+            // return makePlot1(data);
         }),
     fetch("data/gen-ghi-panels-2016.json")
         .then(data => data.json())
