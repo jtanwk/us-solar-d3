@@ -3,7 +3,7 @@ SHINING A LIGHT ON US HOUSEHOLD SOLAR ENERGY GENERATION
 JONATHAN TAN
 MASTER JS FILE
 
-AS OF MARCH 1, 2019
+AS OF MARCH 4, 2019
 */
 
 // LOAD DATA
@@ -50,26 +50,36 @@ Promise.all([
 
 function makeLineChart(data, xName, yObjs, axisLabels) {
 
+    /**********************
+    ***** BASIC SETUP *****
+    **********************/
+
     xAxisLabel = axisLabels.xAxis;
     yAxisLabel = axisLabels.yAxis;
 
     const width = 700;
     const height = 700;
-
     const margin = {top: 100, left: 50, right: 50, bottom: 50};
-    plotWidth = width - margin.left - margin.right;
-    plotHeight = height - margin.top - margin.bottom;
 
-    // each yObj is a path from data in each column
-    // yObjs are supplied to function as dict of name-column specifiers
-    // takes col name as argument and returns array of values in that col
-    function getYFn(column) {
-        return function(d) {
-            return d[column];
-        }
-    }
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
 
-    // create new Array attribute to hold values
+    svg = d3.select("#p1")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    /*************************
+    ***** DATA WRANGLING *****
+    *************************/
+
+    // placeholder for later work
+
+    /***********************
+    ***** X & Y SCALES *****
+    ***********************/
+
+    // create new yFuncts Array attribute to hold line generator data
     yFuncts = [];
     for (var y in yObjs) {
         yObjs[y].name = y; // e.g. "Solar, Residential"
@@ -79,8 +89,6 @@ function makeLineChart(data, xName, yObjs, axisLabels) {
         yFuncts.push(yObjs[y].yFunct);
     }
 
-    // Create scales
-
     const xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d[xName]))
         .range([0, plotWidth]);
@@ -89,18 +97,14 @@ function makeLineChart(data, xName, yObjs, axisLabels) {
         return d3.max(data, fn);
     };
 
-    // TODO: FIX LOG SCALE BREAKING EVERYTHING 
+    // TODO: FIX LOG SCALE BREAKING EVERYTHING
     const yScale = d3.scaleLinear()
         .domain([0, d3.max(yFuncts.map(max))])
         .range([plotHeight, 0])
 
-    // Create axes
-
-    svg = d3.select("#p1")
-        .append("svg")
-        .attr("class", "plotArea")
-        .attr("width", width)
-        .attr("height", height);
+    /*********************
+    ***** X & Y AXES *****
+    *********************/
 
     const xAxis = svg.append("g")
         .attr("class", "x axis")
@@ -112,26 +116,39 @@ function makeLineChart(data, xName, yObjs, axisLabels) {
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale));
 
-    // render svg window
+    /****************
+    ***** LINES *****
+    *****************/
 
+    // each yObj is a path from data in each column
+    // yObjs are supplied to function as dict of name-column specifiers
+    // takes col name as argument and returns array of values in that col
+    function getYFn(column) {
+        return function(d) {
+            return d[column];
+        }
+    }
+
+    // Append g to hold lines
     const plot1 = svg.append("g")
         .attr("id", "plot1")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // Plot lines
-
     function getYScaleFn(yObj) {
         return function(d) {
             return yScale(yObjs[yObj].yFunct(d));
         }
     };
 
-    for (var yObj in yObjs) {
-        yObjs[yObj].line = d3.line()
+    // Create new line generator function for each series
+    for (var y in yObjs) {
+        yObjs[y].line = d3.line()
             .x(function(d) {return xScale(d[xName]);})
-            .y(getYScaleFn(yObj));
+            .y(getYScaleFn(y));
     }
 
+    // Draw line for each line generator in yObjs Array
     for (var y in yObjs) {
         yObjs[y].path = plot1.append("path")
             .datum(data)
@@ -141,8 +158,7 @@ function makeLineChart(data, xName, yObjs, axisLabels) {
             .attr("d", yObjs[y].line)
             .attr("id", y);
 
-        // wipe in
-
+        // wipe-in transition
         var totalLength = yObjs[y].path.node().getTotalLength();
 
         yObjs[y].path
