@@ -8,19 +8,15 @@ AS OF MARCH 1, 2019
 
 // LOAD DATA
 Promise.all([
-    fetch("data/gen-by-year.json")
+    fetch("data/gen-by-year3.json")
         .then(data => data.json())
         .then(data => {
-            data.forEach(d => {
-                d.year = new Date(Number(d.year), 0, 1);
-                d.total_btu = Number(d.total_btu);
-                d.full_source = d.full_source;
-            });
             console.log("Dataset 1 loaded.");
-            console.table(data);
+            console.table(data[0]);
 
+            // Line chart - almost taken ad verbatim from
             // http://bl.ocks.org/asielen/44ffca2877d0132572cb
-            var chart = makeLineChart(data, year, {
+            var chart = makeLineChart(data, 'year', {
                 'Geothermal, Utlity': {column: 'geothermalutility'},
                 'Hydroelectric, Commercial': {column: 'hydroelectriccommercial'},
                 'Hydroelectric, Utility': {column: 'hydroelectricutility'},
@@ -53,10 +49,71 @@ Promise.all([
 });
 
 
-function makePlot1(data) {
+function makeLineChart(dataset, xName, yObjs, axisLabels) {
 
-    // Trying to follow these instructions:
-    // https://observablehq.com/@d3/multi-line-chart
+    // create a chart object to hold all data and return
+    var chartObj = {};
+    chartObj.xAxisLabel = axisLabels.xAxis;
+    chartObj.yAxisLabel = axisLabels.yAxis;
+
+    chartObj.data = dataset;
+    chartObj.margin = {top: 100, left: 50, right: 50, bottom: 50};
+    chartObj.width = 700 - chartObj.margin.left - chartObj.margin.right;
+    chartObj.height = 700 - chartObj.margin.top - chartObj.margin.bottom;
+
+    // makes it easier to swap in x variables
+    chartObj.xFunct = function(d) {return d[xName];}
+
+    // each YObj is a path from data in each column
+    // YObjs are supplied to function as dict of name-column specifiers
+    // takes col name as argument and returns array of values in that col
+    function getYFn(column) {
+        return function(d) {
+            return d[column];
+        }
+    }
+
+    // create new Array attribute to hold values
+    chartObj.yFuncts = [];
+    for (var y in yObjs) {
+        yObjs[y].name = y; // e.g. "Solar, Residential"
+        // call getYFn function; takes string and returns array of values
+        yObjs[y].yFunct = getYFn(yObjs[y].column);
+        // push appends arg to the list and returns new length
+        chartObj.yFuncts.push(yObjs[y].yFunct);
+    }
+
+    // Create scales
+
+    chartObj.xScale = d3.scaleLinear()
+        .domain(d3.extent(chartObj.data, chartObj.xFunct))
+        .range([0, chartObj.width]);
+
+    chartObj.max = function(fn) {
+        return d3.max(chartObj.data, fn);
+    };
+
+    chartObj.yScale = d3.scaleLinear()
+        .domain([0, d3.max(chartObj.yFuncts.map(chartObj.max))])
+        .range([chartObj.height, 0])
+
+    // Create axes
+
+    const xaxis = svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+        .call(d3.axisBottom(xScale));
+
+    // y axis
+    const yaxis = svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+        .call(d3.axisLeft(yScale));
+
+}
+
+
+function makePlot1(data) {
 
     /**********************
     ***** BASIC SETUP *****
