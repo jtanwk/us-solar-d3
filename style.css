@@ -101,20 +101,3 @@ h1 {
 .grid path {
     stroke-width: 0;
 }
-
-div.tooltip {
-    position: absolute;
-    text-align: center;
-    dominant-baseline: central;
-
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-
-    font-family: "Asap";
-    font-size: 12px;
-    background: #FFFFFF;
-
-    border: 1px;
-    pointer-events: none;
-}

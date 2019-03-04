@@ -8,12 +8,32 @@ AS OF MARCH 1, 2019
 
 // LOAD DATA
 Promise.all([
-    fetch("data/test-nest.json")
+    fetch("data/gen-by-year.json")
         .then(data => data.json())
         .then(data => {
+            data.forEach(d => {
+                d.year = new Date(Number(d.year), 0, 1);
+                d.total_btu = Number(d.total_btu);
+                d.full_source = d.full_source;
+            });
             console.log("Dataset 1 loaded.");
-            console.log(data);
-            // return makePlot1(data);
+            console.table(data);
+
+            // http://bl.ocks.org/asielen/44ffca2877d0132572cb
+            var chart = makeLineChart(data, year, {
+                'Geothermal, Utlity': {column: 'geothermalutility'},
+                'Hydroelectric, Commercial': {column: 'hydroelectriccommercial'},
+                'Hydroelectric, Utility': {column: 'hydroelectricutility'},
+                'Solar, Commercial': {column: 'solarcommercial'},
+                'Solar. Industrial': {column: 'solarindustrial'},
+                'Solar, Residential': {column: 'solarresidential'},
+                'Solar, Utility': {column: 'solarutility'},
+                'Wind, Commercial': {column: 'windcommercial'},
+                'Wind, Industrial': {column: 'windindustrial'},
+                'Wind, Utility': {column: 'windutility'}
+            }, {xAxis: 'year', yAxis: 'total_btu'})
+
+            return makePlot1(data);
         }),
     fetch("data/gen-ghi-panels-2016.json")
         .then(data => data.json())
@@ -28,6 +48,7 @@ Promise.all([
 ]).then(results => {
     console.log(results);
 }).catch(error => {
+    console.log(error);
     printError();
 });
 
@@ -63,13 +84,13 @@ function makePlot1(data) {
     ***** X & Y SCALES *****
     ***********************/
 
-    const xScale = d3.scaleLinear()
-        .domain(d3.extent(data.year))
+    const xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.year))
         .range([margin.right, plotWidth])
         .nice();
 
     const yScale = d3.scaleLog()
-        .domain([1, d3.max(data.series, d => d3.max(d.values))])
+        .domain(d3.extent(data, d => d.total_btu))
         .range([plotHeight, margin.bottom])
         .nice();
 
@@ -79,51 +100,32 @@ function makePlot1(data) {
 
     // x axis
     const xaxis = svg.append("g")
-        .attr("class", "xAxis")
+        .attr("class", "x axis")
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
         .call(d3.axisBottom(xScale));
 
     // y axis
     const yaxis = svg.append("g")
-        .attr("class", "yAxis")
+        .attr("class", "y axis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale));
-
-    /*****************
-    ***** POINTS *****
-    ******************/
-
-    const plot1 = svg.append("g")
-        .attr("id", "plot1")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-    // plot1.selectAll(".points")
-    //     .data(data)
-    //     .enter()
-    //     .append("circle")
-    //     .attr("class", "points")
-    //     .attr("id", d => d.full_source)
-    //     .attr("cx", d => xScale(d.year))
-    //     .attr("cy", d => yScale(d.total_btu))
-    //     .attr("r", 3);
 
     /****************
     ***** LINES *****
     *****************/
 
-    line = d3.line()
-        .defined(d => !isNan(d))
-        .x((d, i) => xScale(d.year[i]))
-        .y(d => yScale(d));
+    const plot1 = svg.append("g")
+        .attr("id", "plot1")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    plot1.append("g")
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .selectAll("path")
-        .data(data.series)
-        .join("path")
-        .attr("d", d => line(d.values));
+    var valueLine = d3.line()
+        .x(d => xScale(d.year))
+        .y(d => yScale(d.total_btu));
 
+    plot1.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", valueLine)
 
 }
 
@@ -222,9 +224,12 @@ function makePlot2(data) {
             }
         })
         .attr("id", d => d.state)
-        .attr("cx", d => xScale(d.dev_fr_median))
         .attr("cy", (d, i) => yScale(i))
-        .attr("r", 3);
+        .attr("r", 3)
+        .attr("cx", xScale(1))
+        .transition()
+        .duration(2000)
+        .attr("cx", d => xScale(d.dev_fr_median));
 
     /*************************
     ***** TITLE, CAPTION *****
@@ -441,7 +446,6 @@ function makePlot4(data) {
 
     // get unique list of states to use in barchart
     const stateList = [...new Set(data.map(d => d.state))];
-    console.log(stateList);
 
     /***********************
     ***** X & Y SCALES *****
@@ -504,10 +508,26 @@ function makePlot4(data) {
             if (d.panels_per_10k > 1) {
                 return yScale(d.panels_per_10k);
             } else {
-                return yScale(1);
+                return yScale(d.panels_per_10k);
             }
         })
         .attr("width", xBandScale.bandwidth())
+        .attr("height", d => {
+            if (d.panels_per_10k > 1) {
+                return 0;
+            } else {
+                return 0;
+            }
+        })
+        .transition()
+        .duration(2000)
+        .attr("y", d => {
+            if (d.panels_per_10k > 1) {
+                return yScale(d.panels_per_10k);
+            } else {
+                return yScale(1);
+            }
+        })
         .attr("height", d => {
             if (d.panels_per_10k > 1) {
                 return yScale(1) - yScale(d.panels_per_10k);
