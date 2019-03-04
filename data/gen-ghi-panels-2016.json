@@ -1,0 +1,391 @@
+[
+  {
+    "state": "AK",
+    "region": "West",
+    "btu_per_10k": 0.0135,
+    "dev_fr_median": 0.2113,
+    "panels_per_10k": 0.1617
+  },
+  {
+    "state": "AL",
+    "region": "South",
+    "sun": 4.5698,
+    "btu_per_10k": 0.0041,
+    "dev_fr_median": 0.0645,
+    "panels_per_10k": 0.0267
+  },
+  {
+    "state": "AR",
+    "region": "South",
+    "sun": 4.4368,
+    "btu_per_10k": 0.0134,
+    "dev_fr_median": 0.2098,
+    "panels_per_10k": 0.5287
+  },
+  {
+    "state": "AZ",
+    "region": "West",
+    "sun": 5.6411,
+    "btu_per_10k": 1.3908,
+    "dev_fr_median": 21.7993,
+    "panels_per_10k": 123.3532
+  },
+  {
+    "state": "CA",
+    "region": "West",
+    "sun": 5.2616,
+    "btu_per_10k": 1.3113,
+    "dev_fr_median": 20.5532,
+    "panels_per_10k": 146.3204
+  },
+  {
+    "state": "CO",
+    "region": "West",
+    "sun": 4.839,
+    "btu_per_10k": 0.4783,
+    "dev_fr_median": 7.4965,
+    "panels_per_10k": 2.5088
+  },
+  {
+    "state": "CT",
+    "region": "Northeast",
+    "sun": 3.8786,
+    "btu_per_10k": 0.4865,
+    "dev_fr_median": 7.6254,
+    "panels_per_10k": 43.3195
+  },
+  {
+    "state": "DC",
+    "btu_per_10k": 0.2349,
+    "dev_fr_median": 3.6815,
+    "panels_per_10k": 32.5763
+  },
+  {
+    "state": "DE",
+    "region": "South",
+    "sun": 4.1423,
+    "btu_per_10k": 0.4201,
+    "dev_fr_median": 6.585,
+    "panels_per_10k": 45.207
+  },
+  {
+    "state": "FL",
+    "region": "South",
+    "sun": 4.9224,
+    "btu_per_10k": 0.0563,
+    "dev_fr_median": 0.8821,
+    "panels_per_10k": 1.0387
+  },
+  {
+    "state": "GA",
+    "region": "South",
+    "sun": 4.6368,
+    "btu_per_10k": 0.0126,
+    "dev_fr_median": 0.1976,
+    "panels_per_10k": 0.0126
+  },
+  {
+    "state": "HI",
+    "region": "West",
+    "sun": 5.215,
+    "btu_per_10k": 3.353,
+    "dev_fr_median": 52.5537,
+    "panels_per_10k": 4.228
+  },
+  {
+    "state": "IA",
+    "region": "North Central",
+    "sun": 3.9821,
+    "btu_per_10k": 0.0638,
+    "dev_fr_median": 1,
+    "panels_per_10k": 0.201
+  },
+  {
+    "state": "ID",
+    "region": "West",
+    "sun": 4.2698,
+    "btu_per_10k": 0.0416,
+    "dev_fr_median": 0.6518,
+    "panels_per_10k": 0.0416
+  },
+  {
+    "state": "IL",
+    "region": "North Central",
+    "sun": 4.0609,
+    "btu_per_10k": 0.0102,
+    "dev_fr_median": 0.1592,
+    "panels_per_10k": 0.0711
+  },
+  {
+    "state": "IN",
+    "region": "North Central",
+    "sun": 4.0019,
+    "btu_per_10k": 0.0136,
+    "dev_fr_median": 0.2127,
+    "panels_per_10k": 0.8473
+  },
+  {
+    "state": "KS",
+    "region": "North Central",
+    "sun": 4.6168,
+    "btu_per_10k": 0.0206,
+    "dev_fr_median": 0.3235,
+    "panels_per_10k": 0.031
+  },
+  {
+    "state": "KY",
+    "region": "South",
+    "sun": 4.1419,
+    "btu_per_10k": 0.0158,
+    "dev_fr_median": 0.2473,
+    "panels_per_10k": 0.0383
+  },
+  {
+    "state": "LA",
+    "region": "South",
+    "sun": 4.6546,
+    "btu_per_10k": 0.393,
+    "dev_fr_median": 6.16,
+    "panels_per_10k": 0.6387
+  },
+  {
+    "state": "MA",
+    "region": "Northeast",
+    "sun": 3.814,
+    "btu_per_10k": 0.6078,
+    "dev_fr_median": 9.5259,
+    "panels_per_10k": 95.1954
+  },
+  {
+    "state": "MD",
+    "region": "South",
+    "sun": 4.1227,
+    "btu_per_10k": 0.5153,
+    "dev_fr_median": 8.0758,
+    "panels_per_10k": 17.763
+  },
+  {
+    "state": "ME",
+    "region": "Northeast",
+    "sun": 3.5989,
+    "btu_per_10k": 0.1427,
+    "dev_fr_median": 2.2366,
+    "panels_per_10k": 0.4656
+  },
+  {
+    "state": "MI",
+    "region": "North Central",
+    "sun": 3.7243,
+    "btu_per_10k": 0.0242,
+    "dev_fr_median": 0.3789,
+    "panels_per_10k": 0.133
+  },
+  {
+    "state": "MN",
+    "region": "North Central",
+    "sun": 3.7116,
+    "btu_per_10k": 0.0326,
+    "dev_fr_median": 0.5111,
+    "panels_per_10k": 0.663
+  },
+  {
+    "state": "MO",
+    "region": "North Central",
+    "sun": 4.2548,
+    "btu_per_10k": 0.1231,
+    "dev_fr_median": 1.9293,
+    "panels_per_10k": 5.4587
+  },
+  {
+    "state": "MS",
+    "region": "South",
+    "sun": 4.5743,
+    "btu_per_10k": 0.0067,
+    "dev_fr_median": 0.1049,
+    "panels_per_10k": 0.1606
+  },
+  {
+    "state": "MT",
+    "region": "West",
+    "sun": 3.9371,
+    "btu_per_10k": 0.0767,
+    "dev_fr_median": 1.2027,
+    "panels_per_10k": 0.048
+  },
+  {
+    "state": "NC",
+    "region": "South",
+    "sun": 4.4262,
+    "btu_per_10k": 0.0503,
+    "dev_fr_median": 0.7878,
+    "panels_per_10k": 0.0256
+  },
+  {
+    "state": "NE",
+    "region": "North Central",
+    "sun": 3.6698,
+    "btu_per_10k": 0.0105,
+    "dev_fr_median": 0.1644,
+    "panels_per_10k": 0.0262
+  },
+  {
+    "state": "NH",
+    "region": "Northeast",
+    "sun": 3.6778,
+    "btu_per_10k": 0.2697,
+    "dev_fr_median": 4.2272,
+    "panels_per_10k": 23.2695
+  },
+  {
+    "state": "NJ",
+    "region": "Northeast",
+    "sun": 4.0126,
+    "btu_per_10k": 0.5489,
+    "dev_fr_median": 8.6038,
+    "panels_per_10k": 48.2935
+  },
+  {
+    "state": "NM",
+    "region": "West",
+    "sun": 5.5031,
+    "btu_per_10k": 0.4421,
+    "dev_fr_median": 6.9291,
+    "panels_per_10k": 28.8657
+  },
+  {
+    "state": "NV",
+    "region": "West",
+    "sun": 5.1642,
+    "btu_per_10k": 0.8605,
+    "dev_fr_median": 13.4874,
+    "panels_per_10k": 49.6861
+  },
+  {
+    "state": "NY",
+    "region": "Northeast",
+    "sun": 3.7119,
+    "btu_per_10k": 0.277,
+    "dev_fr_median": 4.342,
+    "panels_per_10k": 22.2564
+  },
+  {
+    "state": "OH",
+    "region": "North Central",
+    "sun": 3.8974,
+    "btu_per_10k": 0.0172,
+    "dev_fr_median": 0.2699,
+    "panels_per_10k": 1.1305
+  },
+  {
+    "state": "OK",
+    "region": "South",
+    "sun": 4.7113,
+    "btu_per_10k": 0.0076,
+    "dev_fr_median": 0.1198,
+    "panels_per_10k": 0.0127
+  },
+  {
+    "state": "OR",
+    "region": "West",
+    "sun": 4.2787,
+    "btu_per_10k": 0.1637,
+    "dev_fr_median": 2.5654,
+    "panels_per_10k": 6.5128
+  },
+  {
+    "state": "PA",
+    "region": "Northeast",
+    "sun": 3.8112,
+    "btu_per_10k": 0.0853,
+    "dev_fr_median": 1.3363,
+    "panels_per_10k": 7.6008
+  },
+  {
+    "state": "RI",
+    "region": "Northeast",
+    "sun": 3.8873,
+    "btu_per_10k": 0.1325,
+    "dev_fr_median": 2.0771,
+    "panels_per_10k": 2.8587
+  },
+  {
+    "state": "SC",
+    "region": "South",
+    "sun": 4.6047,
+    "btu_per_10k": 0.0484,
+    "dev_fr_median": 0.7582,
+    "panels_per_10k": 0.2016
+  },
+  {
+    "state": "TN",
+    "region": "South",
+    "sun": 4.2888,
+    "btu_per_10k": 0.0331,
+    "dev_fr_median": 0.5184,
+    "panels_per_10k": 0.3548
+  },
+  {
+    "state": "TX",
+    "region": "South",
+    "sun": 5.0407,
+    "btu_per_10k": 0.0904,
+    "dev_fr_median": 1.4176,
+    "panels_per_10k": 4.4475
+  },
+  {
+    "state": "UT",
+    "region": "West",
+    "sun": 4.9918,
+    "btu_per_10k": 0.331,
+    "dev_fr_median": 5.1882,
+    "panels_per_10k": 1.111
+  },
+  {
+    "state": "VA",
+    "region": "South",
+    "sun": 4.2327,
+    "btu_per_10k": 0.0297,
+    "dev_fr_median": 0.4658,
+    "panels_per_10k": 0.0416
+  },
+  {
+    "state": "VT",
+    "region": "Northeast",
+    "sun": 3.6036,
+    "btu_per_10k": 0.8165,
+    "dev_fr_median": 12.7979,
+    "panels_per_10k": 18.0757
+  },
+  {
+    "state": "WA",
+    "region": "West",
+    "sun": 3.7459,
+    "btu_per_10k": 0.1043,
+    "dev_fr_median": 1.6344,
+    "panels_per_10k": 0.2182
+  },
+  {
+    "state": "WI",
+    "region": "North Central",
+    "sun": 3.7508,
+    "btu_per_10k": 0.0277,
+    "dev_fr_median": 0.434,
+    "panels_per_10k": 3.1028
+  },
+  {
+    "state": "WV",
+    "region": "South",
+    "sun": 3.9505,
+    "btu_per_10k": 0.0218,
+    "dev_fr_median": 0.3424,
+    "panels_per_10k": 0.4096
+  },
+  {
+    "state": "WY",
+    "region": "West",
+    "sun": 4.3836,
+    "btu_per_10k": 0.0342,
+    "dev_fr_median": 0.5354,
+    "panels_per_10k": 0.1537
+  }
+]
