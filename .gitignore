@@ -1,3 +1,5 @@
 *.geojson
 .DS_Store
 .Rproj.user
+.Rhistory
+.here
