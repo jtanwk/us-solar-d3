@@ -8,7 +8,7 @@ AS OF MARCH 4, 2019
 
 // LOAD DATA
 Promise.all([
-    fetch("data/gen-by-year.json")
+    fetch("data/processed-data/gen-by-year.json")
         .then(data => data.json())
         .then(data => {
             console.log("Dataset 1 loaded.");
@@ -18,7 +18,7 @@ Promise.all([
             // http://bl.ocks.org/asielen/44ffca2877d0132572cb
             return makePlot1(data);
         }),
-    fetch("data/gen-ghi-panels-2016.json")
+    fetch("data/processed-data/gen-ghi-panels-2016.json")
         .then(data => data.json())
         .then(data => {
             console.log("Dataset 2 loaded.");
