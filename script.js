@@ -14,7 +14,7 @@ Promise.all([
             console.log("Dataset 1 loaded.");
             console.table(data[0]);
 
-            // Line chart - almost taken ad verbatim from
+            // Line chart - adapted from
             // http://bl.ocks.org/asielen/44ffca2877d0132572cb
             var chart = makeLineChart(data, 'year', {
                 'Geothermal, Utlity': {column: 'geothermalutility'},
@@ -28,7 +28,6 @@ Promise.all([
                 'Wind, Industrial': {column: 'windindustrial'},
                 'Wind, Utility': {column: 'windutility'}
             }, {xAxis: 'year', yAxis: 'total_btu'})
-
             // return makePlot1(data);
         }),
     fetch("data/gen-ghi-panels-2016.json")
@@ -49,23 +48,20 @@ Promise.all([
 });
 
 
-function makeLineChart(dataset, xName, yObjs, axisLabels) {
+function makeLineChart(data, xName, yObjs, axisLabels) {
 
-    // create a chart object to hold all data and return
-    var chartObj = {};
-    chartObj.xAxisLabel = axisLabels.xAxis;
-    chartObj.yAxisLabel = axisLabels.yAxis;
+    xAxisLabel = axisLabels.xAxis;
+    yAxisLabel = axisLabels.yAxis;
 
-    chartObj.data = dataset;
-    chartObj.margin = {top: 100, left: 50, right: 50, bottom: 50};
-    chartObj.width = 700 - chartObj.margin.left - chartObj.margin.right;
-    chartObj.height = 700 - chartObj.margin.top - chartObj.margin.bottom;
+    const width = 700;
+    const height = 700;
 
-    // makes it easier to swap in x variables
-    chartObj.xFunct = function(d) {return d[xName];}
+    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+    plotWidth = width - margin.left - margin.right;
+    plotHeight = height - margin.top - margin.bottom;
 
-    // each YObj is a path from data in each column
-    // YObjs are supplied to function as dict of name-column specifiers
+    // each yObj is a path from data in each column
+    // yObjs are supplied to function as dict of name-column specifiers
     // takes col name as argument and returns array of values in that col
     function getYFn(column) {
         return function(d) {
@@ -74,42 +70,90 @@ function makeLineChart(dataset, xName, yObjs, axisLabels) {
     }
 
     // create new Array attribute to hold values
-    chartObj.yFuncts = [];
+    yFuncts = [];
     for (var y in yObjs) {
         yObjs[y].name = y; // e.g. "Solar, Residential"
         // call getYFn function; takes string and returns array of values
         yObjs[y].yFunct = getYFn(yObjs[y].column);
         // push appends arg to the list and returns new length
-        chartObj.yFuncts.push(yObjs[y].yFunct);
+        yFuncts.push(yObjs[y].yFunct);
     }
 
     // Create scales
 
-    chartObj.xScale = d3.scaleLinear()
-        .domain(d3.extent(chartObj.data, chartObj.xFunct))
-        .range([0, chartObj.width]);
+    const xScale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d[xName]))
+        .range([0, plotWidth]);
 
-    chartObj.max = function(fn) {
-        return d3.max(chartObj.data, fn);
+    function max(fn) {
+        return d3.max(data, fn);
     };
 
-    chartObj.yScale = d3.scaleLinear()
-        .domain([0, d3.max(chartObj.yFuncts.map(chartObj.max))])
-        .range([chartObj.height, 0])
+    // TODO: FIX LOG SCALE BREAKING EVERYTHING 
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(yFuncts.map(max))])
+        .range([plotHeight, 0])
 
     // Create axes
 
-    const xaxis = svg.append("g")
+    svg = d3.select("#p1")
+        .append("svg")
+        .attr("class", "plotArea")
+        .attr("width", width)
+        .attr("height", height);
+
+    const xAxis = svg.append("g")
         .attr("class", "x axis")
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
         .call(d3.axisBottom(xScale));
 
-    // y axis
-    const yaxis = svg.append("g")
+    const yAxis = svg.append("g")
         .attr("class", "y axis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale));
 
+    // render svg window
+
+    const plot1 = svg.append("g")
+        .attr("id", "plot1")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Plot lines
+
+    function getYScaleFn(yObj) {
+        return function(d) {
+            return yScale(yObjs[yObj].yFunct(d));
+        }
+    };
+
+    for (var yObj in yObjs) {
+        yObjs[yObj].line = d3.line()
+            .x(function(d) {return xScale(d[xName]);})
+            .y(getYScaleFn(yObj));
+    }
+
+    for (var y in yObjs) {
+        yObjs[y].path = plot1.append("path")
+            .datum(data)
+            .attr("class", "line")
+            .style("fill", "none")
+            .style("stroke", "black")
+            .attr("d", yObjs[y].line)
+            .attr("id", y);
+
+        // wipe in
+
+        var totalLength = yObjs[y].path.node().getTotalLength();
+
+        yObjs[y].path
+            .style("opacity", 1)
+            .attr("stroke-dasharray", totalLength + " " + totalLength)
+            .attr("stroke-dashoffset", totalLength)
+            .transition()
+              .ease(d3.easeCubic)
+              .duration(2000)
+              .attr("stroke-dashoffset", 0);
+    }
 }
 
 
