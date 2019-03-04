@@ -1,2 +1,3 @@
 *.geojson
 .DS_Store
+.Rproj.user

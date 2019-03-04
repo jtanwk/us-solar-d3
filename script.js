@@ -8,7 +8,7 @@ AS OF MARCH 4, 2019
 
 // LOAD DATA
 Promise.all([
-    fetch("data/gen-by-year3.json")
+    fetch("data/gen-by-year.json")
         .then(data => data.json())
         .then(data => {
             console.log("Dataset 1 loaded.");
@@ -103,18 +103,17 @@ function makePlot1(data) {
         .domain([0, d3.max(yFuncts.map(max))])
         .range([plotHeight, 0])
 
-
     /*********************
     ***** X & Y AXES *****
     *********************/
 
     const xAxis = svg.append("g")
-        .attr("class", "x axis")
+        .attr("class", "xAxis")
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
         .call(d3.axisBottom(xScale));
 
     const yAxis = svg.append("g")
-        .attr("class", "y axis")
+        .attr("class", "yAxis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale));
 
