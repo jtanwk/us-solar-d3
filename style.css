@@ -36,22 +36,20 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border: 2px solid red;
 }
 
-.points {
-    stroke: #000000;
-}
-
-.West {
+.grey {
     fill: #DDDDDD;
 }
 
-.Northeast {
+.purple {
     fill: #5D2BF0;
 }
 
-.selectedPoint {
-    fill: #FF0000;
+.orange {
+    fill: #FF810F;
 }
 
 .chartTitle {
@@ -67,32 +65,32 @@ h1 {
     color: #3F3F3F;
 }
 
+
 .axis {
     font-family: "Asap";
     font-size: 10px;
 }
 
+.barLabels {
+    font-family: "Asap";
+    font-size: 12px;}
+
 .xLabel,
 .yLabel {
     font-family: "Asap SemiBold";
     font-size: 12px;
+    color: #000000;
 }
+
+.tick line,
+.domain {
+    color: #FFFFFF;
+}
+
 
 .captionText {
     font-family: "Asap Italic";
     font-size: 8px;
-}
-
-.legendTitle {
-    font-family: "Asap Semibold";
-    font-size: 12px;
-    color: #3F3F3F;
-}
-
-.legendTextNE,
-.legendTextW {
-    font-family: "Asap";
-    font-size: 12px;
 }
 
 .grid line {
