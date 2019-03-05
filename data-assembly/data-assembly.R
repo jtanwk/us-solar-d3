@@ -27,11 +27,8 @@ library(rnaturalearthdata)
 library(geojsonio) # for exporting geojson data
 
 # Load previously-imported data
-# Data assemby process captured in /scripts/data-import.R'
 set_here(path = '..')
 load(here('..', 'data', 'raw-data', 'solar_data_master.RData'))
-
-## TODO: data loading doesn't work
 
 ########## PLOT 1: SOLAR ENERGY GENERATION BY SOURCE, YEAR ##########
 
