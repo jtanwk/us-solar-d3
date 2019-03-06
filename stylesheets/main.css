@@ -4,50 +4,154 @@
 
 @font-face {
     font-family: "Asap";
-    src: url("lib/fonts/Asap-Regular.ttf");
+    src: url("fonts/Asap-Regular.ttf");
 }
 
 @font-face {
     font-family: "Asap SemiBold";
-    src: url("lib/fonts/Asap-SemiBold.ttf");
+    src: url("fonts/Asap-SemiBold.ttf");
 }
 
 @font-face {
     font-family: "Asap Italic";
-    src: url("lib/fonts/Asap-Italic.ttf");
+    src: url("fonts/Asap-Italic.ttf");
 }
 
-/*******************
-***** MAIN CSS *****
-*******************/
+/***********************
+***** THEME COLORS *****
+***********************/
+
+.grey {
+    fill: #DDDDDD;
+}
+
+.purple {
+    fill: #5D2BF0;
+}
+
+.orange {
+    fill: #FF810F;
+}
+
+/************************
+***** DIV-LEVEL CSS *****
+************************/
+
+* {
+    box-sizing: border-box;
+}
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+    /* width: 100%;
+    height: 100%; */
+    margin: 0;
+    padding: 0;
 }
 
-h1,
-h2 {
-    font-size: 24px;
-    font-family: sans-serif;
+body {
+    min-height: 1200px;
 }
 
-.plotArea {
+/* Plot area css defined below with Scrollama*/
+/* .plotArea {
     width: 100%;
     height: 100%;
 
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
 
+    z-index: 0;
+
+    background-color: #FFFFFF;
     border: 2px solid red;
+} */
+
+svg {
+    border: 2px solid red;
+}
+
+/*****************************
+***** SCROLLAMA SETTINGS *****
+*****************************/
+
+/* Adapted from The Pudding:
+https://pudding.cool/process/introducing-scrollama/ */
+
+#scroll {
+  position: relative;
+}
+
+.scroll__graphic {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  right: 2rem;
+  bottom: auto;
+  width: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  /* background-color: #DDDDDD; */
+  border: 1px solid #000000;
+}
+
+.scroll__graphic.is-fixed {
+  position: fixed;
+}
+
+.scroll__graphic.is-bottom {
+  bottom: 0;
+  top: auto;
+}
+
+.scroll__graphic .plotArea {
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+  z-index: -1;
+
+  background-color: #FFFFFF;
+  border: 2px solid red;
+}
+
+.scroll__text {
+    position: relative;
+  padding: 0 1rem;
+  max-width: 30rem;
+
+}
+
+.step {
+  opacity: 1;
+  padding: 1rem;
+
+  border: 2px solid red;
+}
+
+.step.is-active {
+  opacity: 1;
+  border: 5px solid green;
 }
 
 
 /***************
 ***** TEXT *****
 ***************/
+
+/* Titles */
+h1,
+h2 {
+    font-size: 24px;
+    font-family: sans-serif;
+}
 
 /* Body text */
 p {
@@ -91,6 +195,12 @@ p {
     color: #000000;
 }
 
+/* Chart caption text */
+.captionText {
+    font-family: "Asap Italic";
+    font-size: 8px;
+}
+
 /* Bar chart labels */
 .barLabels {
     font-family: "Asap";
@@ -98,42 +208,23 @@ p {
     color: #000000;
 }
 
+/*************************
+***** CHART ELEMENTS *****
+*************************/
 
-
-
-/*****************
-***** COLORS *****
-*****************/
-
-.grey {
-    fill: #DDDDDD;
-}
-
-.purple {
-    fill: #5D2BF0;
-}
-
-.orange {
-    fill: #FF810F;
-}
-
-
-
+/* Tick lines - transparent */
 .tick line,
 .domain {
     color: #FFFFFF;
 }
 
-.captionText {
-    font-family: "Asap Italic";
-    font-size: 8px;
-}
-
+/* Plot area gridlines */
 .grid line {
     stroke: #DDDDDD;
     stroke-opacity: 0.5;
 }
 
+/* Outer paths */
 .grid path {
     stroke-width: 0;
 }
