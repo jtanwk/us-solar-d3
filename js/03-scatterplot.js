@@ -1,12 +1,15 @@
-
 function makePlot3(data) {
 
     /**********************
     ***** BASIC SETUP *****
     **********************/
 
-    const height = 700;
-    const width = 700;
+    // dynamic dimension sizing code adapted from
+    // https://github.com/d3/d3-selection/issues/128
+    const bbox = d3.select("#p3").node().getBoundingClientRect()
+
+    const width = bbox.width;
+    const height = bbox.height;
     const margin = {top: 100, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
@@ -124,7 +127,7 @@ function makePlot3(data) {
 
     // chart title
     header.selectAll(".chartTitle")
-        .data([{"label": "Northeast states generate more solar energy from less sunlight"}])
+        .data([{"label": "Solar Irradiance vs. Solar Energy Generated"}])
         .enter()
         .append("text")
         .text(function(d) {return d.label;})
@@ -144,7 +147,7 @@ function makePlot3(data) {
         .append("text")
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
-        .attr("y", height)
+        .attr("y", height - 15)
         .attr("text-anchor", "start")
         .attr("class", "captionText")
 }

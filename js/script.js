@@ -3,17 +3,35 @@ SHINING A LIGHT ON US HOUSEHOLD SOLAR ENERGY GENERATION
 JONATHAN TAN
 MASTER JS FILE
 
-AS OF MARCH 5, 2019
+AS OF MARCH 9, 2019
+
+LIBRARIES LOADED IN GLOBAL:
+    - d3
+    - scrollama
+    - intersection-observer
 */
 
-// using d3 for convenience, and storing a selected elements
+/*
+    office hours questions:
+    1. redraw - div is changing size but svg is not being redrawn
+        - how to select just the svg?
+    2. why is my first box so far down
+    3. how to alternate between in-chart changes and between-chart changes
+        - switch/case?
+    4. why are up-direction transitions so buggy?
+*/
+
+// scollama code heavily adapted from
+//https://pudding.cool/process/introducing-scrollama/
+
+// initial d3 selections for convenience
 var container = d3.select('#scroll');
 var graphic = container.select('.scroll__graphic');
 var chart = graphic.selectAll('.plotArea');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
 
-// initialize the scrollama
+// initialize scrollama
 var scroller = scrollama();
 
 // resize function to set dimensions on load and on page resize
@@ -29,17 +47,24 @@ function handleResize() {
 		.style('height', window.innerHeight + 'px');
 
 	// 3. update width of chart by subtracting from text width
-	var chartMargin = 32;
+	var chartMargin = 10;
 	var textWidth = text.node().offsetWidth;
 	var chartWidth = graphic.node().offsetWidth - textWidth - chartMargin;
-	// make the height 1/2 of viewport
-	var chartHeight = Math.floor(window.innerHeight / 2);
+    var chartHeight = Math.floor(chartWidth * 0.75)
 
 	chart
 		.style('width', chartWidth + 'px')
 		.style('height', chartHeight + 'px');
 
-	// 4. tell scrollama to update new element dimensions
+    // 4. update dimensions of svg element in chart div
+
+    var svg = d3.select(".plotArea is-active").select("svg")
+
+    svg
+        .attr("width", chartWidth + "px")
+        .attr("height", chartHeight + "px")
+
+	// 5. tell scrollama to update new element dimensions
 	scroller.resize();
 }
 
@@ -52,41 +77,35 @@ function handleStepEnter(response) {
 		return i === response.index;
 	});
 
-	// update graphic based on step here
-	var stepData = step.attr('data-step');
+	// update graphic based on step
+    chart.classed('is-active', false);
+    chart.classed('is-active', function(d, i) {return i === response.index;});
 
-    // console.log(step.attr('data-step'));
-    // console.log(chart._groups[0]);
+    // USE BELOW FOR MULTIPLE STEPS ON THE SAME CHART
+    // var dataStep = response.element.dataset.step;
+    // console.log(dataStep);
 
-    /* TODO:
-    1. get data-step attribute of incoming step
-    2. update corresponding chart's "z-index" attribute to 1
-    3. change all other charts' "z-index" to -1
-
-    OTHER PROBLEM:
-    SVG windows bigger than .plotArea divs.
-    Need to replace constant width, height settings in plots
-        with dynamically obtained dimensions from elsewhere
-    */
+    // redraw chart upon display
+    handleResize();
 }
 
 function handleContainerEnter(response) {
-	// response = { direction }
-
 	// sticky the graphic
 	graphic.classed('is-fixed', true);
 	graphic.classed('is-bottom', false);
 }
 
 function handleContainerExit(response) {
-	// response = { direction }
-
 	// un-sticky the graphic, and pin to top/bottom of container
 	graphic.classed('is-fixed', false);
 	graphic.classed('is-bottom', response.direction === 'down');
 }
 
-function handleContainerExit(response) { }
+function handleContainerExit(response) {
+
+    // tbd
+
+}
 
 function setupStickyfill() {
     d3.selectAll('.sticky').each(function () {
@@ -109,7 +128,7 @@ function init() {
 			graphic: '.scroll__graphic', // the graphic
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
-			offset: 0.5, // set the trigger to be 1/2 way down screen
+			offset: 0.33, // set the trigger to be 1/2 way down screen
 			debug: true, // display the trigger offset for testing
 		})
 		.onStepEnter(handleStepEnter)

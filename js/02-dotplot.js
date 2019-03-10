@@ -4,8 +4,12 @@ function makePlot2(data) {
     ***** BASIC SETUP *****
     **********************/
 
-    const height = 700;
-    const width = 700;
+    // dynamic dimension sizing code adapted from
+    // https://github.com/d3/d3-selection/issues/128
+    const bbox = d3.select("#p2").node().getBoundingClientRect()
+
+    const width = bbox.width;
+    const height = bbox.height;
     const margin = {top: 100, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
@@ -58,7 +62,7 @@ function makePlot2(data) {
         .attr("class", "grid")
         .call(d3.axisTop(xScale)
             .ticks(4)
-            .tickSize(-plotHeight)
+            .tickSize(-(plotHeight - 50))
             .tickFormat(""));
 
     // x axis label
@@ -71,7 +75,7 @@ function makePlot2(data) {
         .text(d => d.label)
         .attr("text-anchor", "middle")
         .attr("x", (0.5 * (plotWidth + margin.left)))
-        .attr("y", 0.75 * margin.top);
+        .attr("y", margin.top - 25);
 
     /*****************
     ***** POINTS *****
@@ -79,7 +83,7 @@ function makePlot2(data) {
 
     const plot2 = svg.append("g")
         .attr("id", "plot2")
-        .attr("transform", `translate(${margin.left}, ${0.5 * margin.top})`);
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     plot2.selectAll(".points")
         .data(data)
@@ -105,19 +109,19 @@ function makePlot2(data) {
     *************************/
 
     // Create header grouping
-    const header = svg.append("g")
-        .attr("id", "header");
+    // const header = svg.append("g")
+    //     .attr("id", "header");
 
     // chart title
-    header.selectAll(".chartTitle")
-        .data([{"label": "Hawaii generates over 50x more solar energy per capita than the national median"}])
-        .enter()
-        .append("text")
-        .text(function(d) {return d.label;})
-        .attr("x", margin.left)
-        .attr("y", 15)
-        .attr("text-anchor", "start")
-        .attr("class", "chartTitle")
+    // header.selectAll(".chartTitle")
+    //     .data([{"label": "Hawaii generates over 50x more solar energy per capita than the national median"}])
+    //     .enter()
+    //     .append("text")
+    //     .text(function(d) {return d.label;})
+    //     .attr("x", margin.left)
+    //     .attr("y", margin.top - 10)
+    //     .attr("text-anchor", "start")
+    //     .attr("class", "chartTitle")
 
     // Create footer grouping
     const footer = svg.append("g")
@@ -130,7 +134,7 @@ function makePlot2(data) {
         .append("text")
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
-        .attr("y", height - margin.bottom)
+        .attr("y", height - 15)
         .attr("text-anchor", "start")
         .attr("class", "captionText")
 

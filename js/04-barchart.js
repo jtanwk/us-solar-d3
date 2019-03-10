@@ -5,8 +5,12 @@ function makePlot4(data) {
     ***** BASIC SETUP *****
     **********************/
 
-    const height = 700;
-    const width = 700;
+    // dynamic dimension sizing code adapted from
+    // https://github.com/d3/d3-selection/issues/128
+    const bbox = d3.select("#p4").node().getBoundingClientRect()
+
+    const width = bbox.width;
+    const height = bbox.height;
     const margin = {top: 100, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
@@ -159,7 +163,7 @@ function makePlot4(data) {
 
     // chart title
     header.selectAll(".chartTitle")
-        .data([{"label": "Northeast states are surprisingly well-represented in solar panel counts"}])
+        .data([{"label": "Solar panels per capita as of 2016"}])
         .enter()
         .append("text")
         .text(function(d) {return d.label;})
@@ -179,7 +183,7 @@ function makePlot4(data) {
         .append("text")
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
-        .attr("y", height)
+        .attr("y", height - 15)
         .attr("text-anchor", "start")
         .attr("class", "captionText")
 }
