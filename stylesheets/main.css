@@ -113,6 +113,7 @@ https://pudding.cool/process/introducing-scrollama/ */
     opacity: 0.2;
     padding: 1rem;
 
+    transform: translate(0, -500px);
     border: 1px solid red;
 }
 

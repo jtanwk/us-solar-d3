@@ -36,6 +36,7 @@ var scroller = scrollama();
 
 // resize function to set dimensions on load and on page resize
 function handleResize() {
+
 	// 1. update height of step elements for breathing room between steps
 	var stepHeight = Math.floor(window.innerHeight * 0.75);
 	step.style('height', stepHeight + 'px');
@@ -57,7 +58,6 @@ function handleResize() {
 		.style('height', chartHeight + 'px');
 
     // 4. update dimensions of svg element in chart div
-
     var svg = d3.select(".plotArea is-active").select("svg")
 
     svg
@@ -69,24 +69,84 @@ function handleResize() {
 }
 
 // scrollama event handlers
+const responseDict = [
+    ToggleNewChart,
+    updatePlot1,
+    ToggleNewChart,
+    ToggleNewChart,
+    ToggleNewChart,
+    ToggleNewChart,
+];
 function handleStepEnter(response) {
 	// response = { element, direction, index }
 
-	// fade in current step
-	step.classed('is-active', function (d, i) {
-		return i === response.index;
-	});
-
-	// update graphic based on step
-    chart.classed('is-active', false);
-    chart.classed('is-active', function(d, i) {return i === response.index;});
-
-    // USE BELOW FOR MULTIPLE STEPS ON THE SAME CHART
-    // var dataStep = response.element.dataset.step;
-    // console.log(dataStep);
-
+    // switch(response.index) {
+    //     case 0:
+    //         ToggleNewChart(response);
+    //         break;
+    //     case 1:
+    //         updatePlot1(response);
+    //         break;
+    //     case 2:
+    //         ToggleNewChart(response);
+    //         break;
+    //     case 3:
+    //         ToggleNewChart(response);
+    //         break;
+    //     case 4:
+    //         ToggleNewChart(response);
+    //         break;
+    //     case 5:
+    //         ToggleNewChart(response);
+    //         break;
+    // }
+    responseDict[response.index](response)
     // redraw chart upon display
     handleResize();
+}
+
+function updatePlot1(response) {
+
+    // for text
+    step.classed('is-active', false);
+    step.classed('is-active', function (d, i) {
+        return i === response.index;
+    });
+
+    // update line colors - data is not loaded here
+    // var lines = d3.selectAll("#plot1.line")
+    //     .attr("class", function(d) {
+    //          if (id === "Solar, Residential") {
+    //              return 'line purple';
+    //          } else {
+    //              return 'line'
+    //          }
+    //     })
+}
+
+// switch chart when content demands it
+function ToggleNewChart(response) {
+
+    // general idea: topmost steps are active
+    // when step crosses threshold,
+    // 1. turn all elements inactive
+    // 2. activate relevant element
+
+    // get data-step attribute
+    var dataStep = Number(response.element.dataset.step);
+
+    // for text
+    step.classed('is-active', false);
+    step.classed('is-active', function (d, i) {
+        return i === response.index;
+    });
+
+    // for charts
+    chart.classed('is-active', false);
+    chart.classed('is-active', function(d, i) {
+        return i === dataStep;
+    });
+
 }
 
 function handleContainerEnter(response) {
@@ -103,7 +163,7 @@ function handleContainerExit(response) {
 
 function handleContainerExit(response) {
 
-    // tbd
+    // maybe this will be useful
 
 }
 
@@ -128,7 +188,7 @@ function init() {
 			graphic: '.scroll__graphic', // the graphic
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
-			offset: 0.33, // set the trigger to be 1/2 way down screen
+			offset: 0.5, // set the trigger to be 1/2 way down screen
 			debug: true, // display the trigger offset for testing
 		})
 		.onStepEnter(handleStepEnter)

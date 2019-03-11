@@ -4,6 +4,13 @@ function makePlot1(data) {
     ***** BASIC SETUP *****
     **********************/
 
+    // remove all div elements and redraw
+    // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+    // var plotDiv = document.getElementById("p1");
+    // while (plotDiv.firstChild) {
+    //     plotDiv.removeChild(plotDiv.firstChild);
+    // };
+
     // dynamic dimension sizing code adapted from
     // https://github.com/d3/d3-selection/issues/128
     const bbox = d3.select("#p1").node().getBoundingClientRect()
@@ -26,7 +33,7 @@ function makePlot1(data) {
     *************************/
 
     yObjs = {
-        'Geothermal, Utlity': {column: 'geothermalutility'},
+        'Geothermal, Utility': {column: 'geothermalutility'},
         'Hydroelectric, Commercial': {column: 'hydroelectriccommercial'},
         'Hydroelectric, Utility': {column: 'hydroelectricutility'},
         'Solar, Commercial': {column: 'solarcommercial'},
