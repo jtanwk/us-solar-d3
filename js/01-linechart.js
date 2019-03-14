@@ -4,16 +4,9 @@ function makePlot1(data) {
     ***** BASIC SETUP *****
     **********************/
 
-    // remove all div elements and redraw
-    // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
-    // var plotDiv = document.getElementById("p1");
-    // while (plotDiv.firstChild) {
-    //     plotDiv.removeChild(plotDiv.firstChild);
-    // };
-
     // dynamic dimension sizing code adapted from
     // https://github.com/d3/d3-selection/issues/128
-    const bbox = d3.select("#p1").node().getBoundingClientRect()
+    const bbox = d3.select("#chart").node().getBoundingClientRect()
 
     const width = bbox.width;
     const height = bbox.height;
@@ -22,11 +15,13 @@ function makePlot1(data) {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
-    const svg = d3.select("#p1")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("transform", `translate(0, -25)`);
+    const svg = d3.select("#chart").select("svg");
+
+    /**************************
+    ***** REMOVE OLD DATA *****
+    **************************/
+
+    var g = svg.selectAll("*").remove()
 
     /*************************
     ***** DATA WRANGLING *****
@@ -105,8 +100,8 @@ function makePlot1(data) {
     }
 
     // Append g to hold lines
-    const plot1 = svg.append("g")
-        .attr("id", "plot1")
+    const plot = svg.append("g")
+        .attr("id", "plot")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // Plot lines
@@ -125,7 +120,7 @@ function makePlot1(data) {
 
     // Draw line for each line generator in yObjs Array
     for (var y in yObjs) {
-        yObjs[y].path = plot1.append("path")
+        yObjs[y].path = plot.append("path")
             .datum(data)
             .attr("class", "line")
             .style("fill", "none")
@@ -179,7 +174,5 @@ function makePlot1(data) {
         .attr("y", height - 15)
         .attr("text-anchor", "start")
         .attr("class", "captionText")
-
-
 
 }

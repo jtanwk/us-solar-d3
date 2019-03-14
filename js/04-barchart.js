@@ -7,7 +7,7 @@ function makePlot4(data) {
 
     // dynamic dimension sizing code adapted from
     // https://github.com/d3/d3-selection/issues/128
-    const bbox = d3.select("#p4").node().getBoundingClientRect()
+    const bbox = d3.select("#chart").node().getBoundingClientRect()
 
     const width = bbox.width;
     const height = bbox.height;
@@ -16,10 +16,13 @@ function makePlot4(data) {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
-    const svg = d3.select("#p4")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    const svg = d3.select("#chart").select("svg");
+
+    /**************************
+    ***** REMOVE OLD DATA *****
+    **************************/
+
+    var g = svg.selectAll("*").remove()
 
     /*************************
     ***** DATA WRANGLING *****
@@ -73,11 +76,11 @@ function makePlot4(data) {
     ***** BARS *****
     ***************/
 
-    const plot3 = svg.append("g")
-        .attr("id", "plot3")
+    const plot = svg.append("g")
+        .attr("id", "plot")
         .attr("transform", `translate(0, ${margin.top})`);
 
-    plot3.selectAll(".rects")
+    plot.selectAll(".rects")
         .data(data)
         .enter()
         .append("rect")
@@ -126,7 +129,7 @@ function makePlot4(data) {
     ***** BAR LABELS *****
     *********************/
 
-    plot3.selectAll(".barLabels")
+    plot.selectAll(".barLabels")
         .data(data)
         .enter()
         .append("text")

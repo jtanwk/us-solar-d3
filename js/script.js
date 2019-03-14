@@ -11,18 +11,12 @@ LIBRARIES LOADED IN GLOBAL:
     - intersection-observer
 */
 
-/*
-    office hours questions:
-    1. redraw - div is changing size but svg is not being redrawn
-        - how to select just the svg?
-    2. why is my first box so far down
-    3. how to alternate between in-chart changes and between-chart changes
-        - switch/case?
-    4. why are up-direction transitions so buggy?
-*/
-
 // scollama code heavily adapted from
 //https://pudding.cool/process/introducing-scrollama/
+
+// begin scoping function to avoid globals
+// https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
+
 
 // initial d3 selections for convenience
 var container = d3.select('#scroll');
@@ -51,7 +45,7 @@ function handleResize() {
 	var chartMargin = 10;
 	var textWidth = text.node().offsetWidth;
 	var chartWidth = graphic.node().offsetWidth - textWidth - chartMargin;
-    var chartHeight = Math.floor(chartWidth * 0.75)
+    var chartHeight = Math.floor(chartWidth * 0.66)
 
 	chart
 		.style('width', chartWidth + 'px')
@@ -68,103 +62,35 @@ function handleResize() {
 	scroller.resize();
 }
 
-// scrollama event handlers
-const responseDict = [
-    ToggleNewChart,
-    updatePlot1,
-    ToggleNewChart,
-    ToggleNewChart,
-    ToggleNewChart,
-    ToggleNewChart,
-];
 function handleStepEnter(response) {
 	// response = { element, direction, index }
 
-    // switch(response.index) {
-    //     case 0:
-    //         ToggleNewChart(response);
-    //         break;
-    //     case 1:
-    //         updatePlot1(response);
-    //         break;
-    //     case 2:
-    //         ToggleNewChart(response);
-    //         break;
-    //     case 3:
-    //         ToggleNewChart(response);
-    //         break;
-    //     case 4:
-    //         ToggleNewChart(response);
-    //         break;
-    //     case 5:
-    //         ToggleNewChart(response);
-    //         break;
-    // }
-    responseDict[response.index](response)
+    // change class for current text to active
+    step.classed('is-active', false);
+    step.classed('is-active', function (d, i) {
+        return i === response.index;
+    });
+
+    // update svgs
+    switch(response.index) {
+        case 0:
+            makePlot1(data_1);
+            break;
+        case 1:
+            break;
+        case 2:
+            makePlot2(data_234);
+            break;
+        case 3:
+            makePlot3(data_234);
+            break;
+        case 4:
+            makePlot4(data_234);
+            break;
+    }
+
     // redraw chart upon display
     handleResize();
-}
-
-function updatePlot1(response) {
-
-    // for text
-    step.classed('is-active', false);
-    step.classed('is-active', function (d, i) {
-        return i === response.index;
-    });
-
-    // update line colors - data is not loaded here
-    // var lines = d3.selectAll("#plot1.line")
-    //     .attr("class", function(d) {
-    //          if (id === "Solar, Residential") {
-    //              return 'line purple';
-    //          } else {
-    //              return 'line'
-    //          }
-    //     })
-}
-
-// switch chart when content demands it
-function ToggleNewChart(response) {
-
-    // general idea: topmost steps are active
-    // when step crosses threshold,
-    // 1. turn all elements inactive
-    // 2. activate relevant element
-
-    // get data-step attribute
-    var dataStep = Number(response.element.dataset.step);
-
-    // for text
-    step.classed('is-active', false);
-    step.classed('is-active', function (d, i) {
-        return i === response.index;
-    });
-
-    // for charts
-    chart.classed('is-active', false);
-    chart.classed('is-active', function(d, i) {
-        return i === dataStep;
-    });
-
-}
-
-function handleContainerEnter(response) {
-	// sticky the graphic
-	graphic.classed('is-fixed', true);
-	graphic.classed('is-bottom', false);
-}
-
-function handleContainerExit(response) {
-	// un-sticky the graphic, and pin to top/bottom of container
-	graphic.classed('is-fixed', false);
-	graphic.classed('is-bottom', response.direction === 'down');
-}
-
-function handleContainerExit(response) {
-
-    // maybe this will be useful
-
 }
 
 function setupStickyfill() {
@@ -173,15 +99,14 @@ function setupStickyfill() {
     });
 }
 
-// kick-off code to run once on load
-function init() {
+// run initializer code once on page load
+function scroll_init() {
     setupStickyfill();
 
-	// 1. call a resize on load to update width/height/position of elements
+	// call a resize on load to update width/height/position of elements
 	handleResize();
 
-	// 2. setup the scrollama instance
-	// 3. bind scrollama event handlers (this can be chained like below)
+	// setup the scrollama instance and bind scrollama event handlers
 	scroller
 		.setup({
 			container: '#scroll', // our outermost scrollytelling element
@@ -191,42 +116,47 @@ function init() {
 			offset: 0.5, // set the trigger to be 1/2 way down screen
 			debug: true, // display the trigger offset for testing
 		})
-		.onStepEnter(handleStepEnter)
-		.onContainerEnter(handleContainerEnter)
-		.onContainerExit(handleContainerExit);
+		.onStepEnter(handleStepEnter);
 
 	// setup resize event
 	window.addEventListener('resize', handleResize);
 }
 
-// start it up
-init();
+// setup SVG canvas once; scroll triggers just update this
+function svg_init() {
+    // dynamic dimension sizing code adapted from
+    // https://github.com/d3/d3-selection/issues/128
+    const bbox = d3.select("#chart").node().getBoundingClientRect()
 
+    const width = bbox.width;
+    const height = bbox.height;
+    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.bottom - margin.top;
+
+    const svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("transform", `translate(0, -25)`);
+
+}
 
 // LOAD DATA
 Promise.all([
-    fetch("data/processed-data/gen-by-year.json")
-        .then(data => data.json())
-        .then(data => {
-            console.log("Dataset 1 loaded.");
-            console.table(data[0]);
-
-            // Line chart - heavily adapted from
-            // http://bl.ocks.org/asielen/44ffca2877d0132572cb
-            return makePlot1(data);
-        }),
-    fetch("data/processed-data/gen-ghi-panels-2016.json")
-        .then(data => data.json())
-        .then(data => {
-            console.log("Dataset 2 loaded.");
-            console.log(data[0]);
-            return makePlot2(data), makePlot3(data), makePlot4(data);
-        }),
-    new Promise((resolve, reject) => {
-        resolve('Data correctly loaded.');
-    })
+    d3.json("data/processed-data/gen-by-year.json"),
+    d3.json("data/processed-data/gen-ghi-panels-2016.json")
 ]).then(results => {
-    console.log(results);
+    // assign separate references for each dataset
+    // if using globals are bad I don't yet know a way around this
+    this.data_1 = results[0];
+    this.data_234 = results[1];
+
+    // Go!
+    scroll_init();
+    svg_init();
+
 }).catch(error => {
     console.log(error);
     printError();
@@ -247,5 +177,6 @@ function printError() {
 
     document.getElementById("errMsg").innerHTML = message;
 }
+
 
 //

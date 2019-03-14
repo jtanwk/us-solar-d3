@@ -6,7 +6,7 @@ function makePlot3(data) {
 
     // dynamic dimension sizing code adapted from
     // https://github.com/d3/d3-selection/issues/128
-    const bbox = d3.select("#p3").node().getBoundingClientRect()
+    const bbox = d3.select("#chart").node().getBoundingClientRect()
 
     const width = bbox.width;
     const height = bbox.height;
@@ -15,11 +15,14 @@ function makePlot3(data) {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
-    const svg = d3.select("#p3")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    const svg = d3.select("#chart").select("svg");
 
+    /**************************
+    ***** REMOVE OLD DATA *****
+    **************************/
+
+    var g = svg.selectAll("*").remove()
+    
     /*************************
     ***** DATA WRANGLING *****
     *************************/
@@ -97,11 +100,11 @@ function makePlot3(data) {
     ***** POINTS *****
     ******************/
 
-    const plot3 = svg.append("g")
-        .attr("id", "plot3")
+    const plot = svg.append("g")
+        .attr("id", "plot")
         .attr("transform", `translate(${margin.left}, ${0.5 * margin.top})`);
 
-    plot3.selectAll(".points")
+    plot.selectAll(".points")
         .data(data)
         .enter()
         .append("circle")
