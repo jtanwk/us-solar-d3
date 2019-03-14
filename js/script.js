@@ -11,6 +11,18 @@ LIBRARIES LOADED IN GLOBAL:
     - intersection-observer
 */
 
+/*
+Office hours questions 3/14:
+1. Any way to pass data to scrollama handlers without using globals?
+2. What can I do about line chart yscale?
+2. Why is my map still loading so slowly? Any other way to minimize?
+    - Should I load the topojson separately from the sun/panel data?
+    - Why are the colors not what I expect them to be?
+    - Why is my map moving upwards so quickly? What can I do to add a buffer below?
+3. What can I do about up-scroll transitions? Do I need to do whole new constructor fns?
+*/
+
+
 // scollama code heavily adapted from
 //https://pudding.cool/process/introducing-scrollama/
 
@@ -73,6 +85,7 @@ function handleStepEnter(response) {
             makePlot1(data_1);
             break;
         case 1:
+            updatePlot1(data_1);
             break;
         case 2:
             makePlot2(data_234);

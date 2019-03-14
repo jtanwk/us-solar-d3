@@ -19,10 +19,6 @@ function makePlot1(data) {
 
     const DURATION = 2000;
 
-    var key = function(d) {
-        return d.state;
-    }
-
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/
@@ -63,7 +59,7 @@ function makePlot1(data) {
 
     const xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d.year))
-        .range([0, plotWidth]);
+        .range([0, plotWidth - 100]);
 
     function max(fn) {
         return d3.max(data, fn);
@@ -146,6 +142,54 @@ function makePlot1(data) {
               .duration(2000)
               .attr("stroke-dashoffset", 0);
     }
+
+    /**********************
+    ***** LINE LABELS *****
+    **********************/
+
+    // convert data label to human readable strings
+    labelDict = {
+        'geothermalutility': 'Geothermal, Utility',
+        'hydroelectriccommercial': 'Hydroelectric, Commercial',
+        'hydroelectricutility': 'Hydroelectric, Utility',
+        'solarcommercial': 'Solar, Commercial',
+        'solarindustrial': 'Solar. Industrial',
+        'solarresidential': 'Solar, Residential',
+        'solarutility': 'Solar, Utility',
+        'windcommercial': 'Wind, Commercial',
+        'windindustrial': 'Wind, Industrial',
+        'windutility': 'Wind, Utility'
+    }
+
+    // convert data from most recent year to a useable representation
+    // code below adapted from Andrew McNutt's CAPP 20329 Week 6 tutorial
+    var labelFilter = data.filter(function(d) {return d.year === 2016})[0];
+    var labelData = Object.entries(labelFilter).map(row => {
+        return {label: row[0], value: row[1]};
+    });
+
+    plot.selectAll('.lineLabel')
+        .data(labelData.filter(function(d) {return d.label != "year";}))
+        .enter()
+        .append("text")
+        .attr("class", "lineLabel")
+        .attr("x", function(d) {return xScale(2016.5);})
+        .attr("y", function(d) {return yScale(d.value);})
+        .text(function(d) {return labelDict[d.label];})
+        .attr("dy", function(d) {
+            if (d.label === "windutility") {
+                return 5;
+            } else if (d.label === "hydroelectricutility") {
+                return -2;
+            } else {
+                return 0;
+            }
+        })
+        .style("opacity", 0)
+        .transition()
+        .duration(DURATION)
+        .style("opacity", 1);
+
 
     /*************************
     ***** TITLE, CAPTION *****

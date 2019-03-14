@@ -179,6 +179,13 @@ p {
     font-size: 8px;
 }
 
+/* Line chart labels */
+.lineLabel {
+    font-family: "Asap";
+    font-size: 10px;
+    color: #000000;
+}
+
 /* Bar chart labels */
 .barLabels {
     font-family: "Asap";
