@@ -206,3 +206,11 @@ p {
 .grid path {
     stroke-width: 0;
 }
+
+/* Map formatting */
+
+.map path {
+    fill: #FFFFFF;
+    stroke: #DDDDDD;
+    stroke-width: 1px;
+}

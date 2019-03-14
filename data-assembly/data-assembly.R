@@ -24,7 +24,8 @@ library(zipcode) # for geocoding zipcodes
 library(noncensus) # for more geocoding data 
 library(rnaturalearth)
 library(rnaturalearthdata)
-library(geojsonio) # for exporting geojson data
+library(geojsonio) # for exporting topojson data
+library(rmapshaper) # for simplifying geometries
 
 # Load previously-imported data
 set_here(path = '..')
@@ -117,7 +118,8 @@ county_map %>%
   mutate(panels_per_10k = ifelse(is.na(panels_per_10k), 0, panels_per_10k)) %>%
   select(GEOID, avg, panels_per_10k, geometry) %>%
   unique() %>%
-  mutate(cent = st_centroid(geometry)) %>%
+  # mutate(cent = st_centroid(geometry)) %>%
   rename(sun = avg) %>%
-  arrange(desc(panels_per_10k)) %>%
-  geojson_write(file = here('..', 'data', 'processed-data', 'map-data.geojson'))
+  arrange(desc(panels_per_10k)) %>% 
+  ms_simplify() %>%
+  topojson_write(file = here('..', 'data', 'processed-data', 'map-data.topojson'))

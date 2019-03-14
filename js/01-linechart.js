@@ -17,7 +17,7 @@ function makePlot1(data) {
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 1000;
+    const DURATION = 2000;
 
     var key = function(d) {
         return d.state;

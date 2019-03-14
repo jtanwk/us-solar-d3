@@ -83,6 +83,9 @@ function handleStepEnter(response) {
         case 4:
             makePlot4(data_234);
             break;
+        case 5:
+            makePlot5(data_5);
+            break;
     }
 
     // redraw chart upon display
@@ -142,12 +145,19 @@ function svg_init() {
 // LOAD DATA
 Promise.all([
     d3.json("data/processed-data/gen-by-year.json"),
-    d3.json("data/processed-data/gen-ghi-panels-2016.json")
+    d3.json("data/processed-data/gen-ghi-panels-2016.json"),
+    d3.json("data/processed-data/map-data.topojson")
 ]).then(results => {
     // assign separate references for each dataset
     // if using globals are bad I don't yet know a way around this
     this.data_1 = results[0];
     this.data_234 = results[1];
+
+    // topojson code adapted from
+    // https://bl.ocks.org/almccon/410b4eb5cad61402c354afba67a878b8
+    // and uses https://github.com/topojson/topojson
+    var topology = topojson.feature(results[2], results[2].objects.foo);
+    this.data_5 = topology;
 
     // Go!
     scroll_init();
