@@ -17,12 +17,24 @@ function makePlot3(data) {
 
     const svg = d3.select("#chart").select("svg");
 
+    const DURATION = 1000;
+
+    var key = function(d) {
+        return d.state;
+    }
+
+
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/
 
-    var g = svg.selectAll("*").remove()
-    
+    // var g = svg.selectAll("*").remove()
+    d3.select("#header").remove();
+    d3.select("#footer").remove();
+
+
+
+
     /*************************
     ***** DATA WRANGLING *****
     *************************/
@@ -47,49 +59,42 @@ function makePlot3(data) {
     ***** X AXiS, AXIS LABEL, GRIDLINE *****
     ***************************************/
 
-    // x axis
-    const xaxis = svg.append("g")
-        .attr("class", "xAxis")
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+    // update x axis
+    const xaxis = svg.select(".xAxis")
+        .transition()
+        .duration(DURATION)
         .call(d3.axisBottom(xScale)
-            .ticks(4)
-    );
-
-    // x axis gridlines
-    xaxis.append("g")
-        .attr("class", "grid")
-        .call(d3.axisTop(xScale)
-            .ticks(4)
-            .tickSize(plotHeight)
-            .tickFormat(""));
+            .ticks(5)
+        );
 
     // x axis label
     svg.selectAll(".xLabel")
         .data([{"label": "Annual Average Global Horizontal Irradiance (kWh/m^2/day)"}])
-        .enter()
-        .append("text")
+        .transition()
+        .duration(DURATION)
         .attr("class", "xLabel")
-        .attr("transform", `translate(${margin.left}, ${plotHeight + 0.6 * margin.top})`)
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.bottom + 10})`)
         .text(d => d.label)
         .attr("text-anchor", "middle")
         .attr("x", (0.5 * (plotWidth + margin.left)))
-        .attr("y", 0.75 * margin.top);
+        .attr("y", margin.top - 25);
 
     /***************************************
     ***** Y AXiS, AXIS LABEL, GRIDLINE *****
     ***************************************/
 
-    // y axis
-    const yaxis = svg.append("g")
-        .attr("class", "yAxis")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    // update y axis
+    const yaxis = svg.select(".yAxis")
+        .transition()
+        .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(4)
             .tickFormat(d3.format("0.1r"))
     );
 
     // y axis gridlines
-    yaxis.append("g")
+    svg.select(".yAxis")
+        .append("g")
         .attr("class", "grid")
         .call(d3.axisLeft(yScale)
             .ticks(4)
@@ -100,14 +105,18 @@ function makePlot3(data) {
     ***** POINTS *****
     ******************/
 
-    const plot = svg.append("g")
-        .attr("id", "plot")
-        .attr("transform", `translate(${margin.left}, ${0.5 * margin.top})`);
+    const plot = svg.select("#plot");
 
+    // if scrolling up from bars
+    // remove when fully implementing "up" transitions
+    plot.selectAll(".rects").remove();
+    plot.selectAll(".barLabels").remove();
+
+    // update points
     plot.selectAll(".points")
-        .data(data)
-        .enter()
-        .append("circle")
+        .data(data, key)
+        .transition()
+        .duration(DURATION)
         .attr("class", d => {
             if (d.region == "Northeast") {
                 return "points purple";

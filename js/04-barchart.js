@@ -1,4 +1,3 @@
-
 function makePlot4(data) {
 
     /**********************
@@ -18,11 +17,22 @@ function makePlot4(data) {
 
     const svg = d3.select("#chart").select("svg");
 
+    const DURATION = 1000;
+
+    var key = function(d) {
+        return d.state;
+    }
+
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/
 
-    var g = svg.selectAll("*").remove()
+    // potentially find smoother transitions for some of these
+    d3.select("#header").remove();
+    d3.select("#footer").remove();
+    d3.select(".grid").remove();
+    d3.select(".xAxis").remove();
+    d3.select(".xLabel").remove();
 
     /*************************
     ***** DATA WRANGLING *****
@@ -55,33 +65,52 @@ function makePlot4(data) {
     ***** Y AXiS, AXIS LABEL, GRIDLINE *****
     ***************************************/
 
-    // y axis
-    const yaxis = svg.append("g")
-        .attr("class", "yAxis")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    // update y axis
+    const yaxis = svg.select(".yAxis")
+        .transition()
+        .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(5)
             .tickFormat(d3.format("0.1r"))
     )
 
     // y axis gridlines
-    yaxis.append("g")
-        .attr("class", "grid")
+    svg.select(".yAxis")
+        .select(".grid")
+        .transition()
+        .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(4)
             .tickSize(-plotWidth)
             .tickFormat(""));
 
+
     /***************
     ***** BARS *****
     ***************/
 
-    const plot = svg.append("g")
-        .attr("id", "plot")
-        .attr("transform", `translate(0, ${margin.top})`);
+    const plot = svg.select("#plot");
 
+    // transition out points
+    plot.selectAll(".points")
+        .data(data, key)
+        .transition()
+        .duration(DURATION)
+        .attr("cx", d => xBandScale(d.state) + (0.5 * xBandScale.bandwidth()))
+        .attr("cy", d => {
+            if (d.panels_per_10k > 1) {
+                return yScale(d.panels_per_10k);
+            } else {
+                return yScale(d.panels_per_10k);
+            }
+        })
+        .transition()
+        .duration(0.5 * DURATION)
+        .attr("r", 0);
+
+    // transition in rects
     plot.selectAll(".rects")
-        .data(data)
+        .data(data, key)
         .enter()
         .append("rect")
         .attr("class", d => {
@@ -109,7 +138,8 @@ function makePlot4(data) {
             }
         })
         .transition()
-        .duration(2000)
+        .delay(DURATION)
+        .duration(DURATION)
         .attr("y", d => {
             if (d.panels_per_10k > 1) {
                 return yScale(d.panels_per_10k);
@@ -154,7 +184,11 @@ function makePlot4(data) {
         .attr("text-anchor", "start")
         .attr("transform", d => {
             return `rotate(-90, ${xBandScale(d.state)}, ${yScale(d.panels_per_10k)})`;
-        });
+        })
+        .style("opacity", 0)
+        .transition()
+        .delay(DURATION)
+        .style("opacity", 1);
 
     /*************************
     ***** TITLE, CAPTION *****

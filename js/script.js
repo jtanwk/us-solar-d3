@@ -14,10 +14,6 @@ LIBRARIES LOADED IN GLOBAL:
 // scollama code heavily adapted from
 //https://pudding.cool/process/introducing-scrollama/
 
-// begin scoping function to avoid globals
-// https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
-
-
 // initial d3 selections for convenience
 var container = d3.select('#scroll');
 var graphic = container.select('.scroll__graphic');
@@ -114,7 +110,7 @@ function scroll_init() {
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
 			offset: 0.5, // set the trigger to be 1/2 way down screen
-			debug: true, // display the trigger offset for testing
+			debug: false, // display the trigger offset for testing
 		})
 		.onStepEnter(handleStepEnter);
 

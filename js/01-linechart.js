@@ -17,6 +17,12 @@ function makePlot1(data) {
 
     const svg = d3.select("#chart").select("svg");
 
+    const DURATION = 1000;
+
+    var key = function(d) {
+        return d.state;
+    }
+
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/

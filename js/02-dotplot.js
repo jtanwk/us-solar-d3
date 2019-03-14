@@ -17,6 +17,12 @@ function makePlot2(data) {
 
     const svg = d3.select("#chart").select("svg");
 
+    const DURATION = 1000;
+
+    var key = function(d) {
+        return d.state;
+    }
+
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/
@@ -80,6 +86,11 @@ function makePlot2(data) {
         .attr("x", (0.5 * (plotWidth + margin.left)))
         .attr("y", margin.top - 25);
 
+    // y axis
+    const yaxis = svg.append("g")
+        .attr("class", "yAxis")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+
     /*****************
     ***** POINTS *****
     ******************/
@@ -89,7 +100,7 @@ function makePlot2(data) {
         .attr("transform", `translate(${margin.left}, ${margin.bottom})`);
 
     plot.selectAll(".points")
-        .data(data)
+        .data(data, key)
         .enter()
         .append("circle")
         .attr("class", d => {
@@ -104,7 +115,7 @@ function makePlot2(data) {
         .attr("r", 3)
         .attr("cx", xScale(1))
         .transition()
-        .duration(2000)
+        .duration(DURATION)
         .attr("cx", d => xScale(d.dev_fr_median));
 
     /*************************

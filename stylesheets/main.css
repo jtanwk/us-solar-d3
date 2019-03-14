@@ -43,8 +43,8 @@
 
 html,
 body {
-    /* width: 100%;
-    height: 100%; */
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -54,12 +54,12 @@ body {
 }
 
 svg {
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 #intro,
 #outro {
-    padding: 0px 100px 0px 100px;
+    padding: 0px 200px 0px 200px;
 }
 
 /*****************************
@@ -86,7 +86,7 @@ https://pudding.cool/process/introducing-scrollama/ */
   transform: translate3d(0, 0, 0);
 
   /* background-color: #DDDDDD; */
-  border: 1px solid #000000;
+  /* border: 1px solid #000000; */
 }
 
 .scroll__graphic .plotArea {
@@ -97,8 +97,8 @@ https://pudding.cool/process/introducing-scrollama/ */
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
 
-    background-color: #FFFFFF;
-    border: 1px solid red;
+    /* background-color: #FFFFFF;
+    border: 1px solid red; */
 }
 
 .scroll__text {
@@ -112,12 +112,12 @@ https://pudding.cool/process/introducing-scrollama/ */
     padding: 1rem;
 
     /* transform: translate(0, -500px); */
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 .step.is-active {
     opacity: 1;
-    border: 2px solid green;
+    /* border: 2px solid green; */
 }
 
 /***************
