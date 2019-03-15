@@ -217,7 +217,7 @@ function makePlot4(data) {
 
     // chart title
     header.selectAll(".chartTitle")
-        .data([{"label": "Solar panels per capita as of 2016"}])
+        .data([{"label": "Solar panels per capita (as of 2016)"}])
         .enter()
         .append("text")
         .text(function(d) {return d.label;})

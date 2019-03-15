@@ -139,7 +139,7 @@ function makePlot2(data) {
         .attr("id", d => d.state)
         .attr("cy", yScale(40.5))
         .attr("cx", xScale(30))
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("class", "points purple")
         .transition()
         .duration(2 * DURATION)

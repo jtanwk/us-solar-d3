@@ -157,7 +157,7 @@ function makePlot3(data) {
 
     // chart title
     header.selectAll(".chartTitle")
-        .data([{"label": "Solar Irradiance vs. Solar Energy Generated"}])
+        .data([{"label": "Solar energy generated per capita in 2016 (BTUs)"}])
         .enter()
         .append("text")
         .text(function(d) {return d.label;})
