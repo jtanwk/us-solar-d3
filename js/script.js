@@ -120,7 +120,7 @@ function scroll_init() {
 			graphic: '.scroll__graphic', // the graphic
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
-			offset: 0.5, // set the trigger to be 1/2 way down screen
+			offset: 0.67, // set the trigger to be 2/3 way down screen
 			debug: false, // display the trigger offset for testing
 		})
 		.onStepEnter(handleStepEnter);

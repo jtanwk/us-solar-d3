@@ -69,10 +69,11 @@ function makePlot4(data) {
     const yaxis = svg.select(".yAxis")
         .transition()
         .duration(DURATION)
+        .attr("transform", `translate(${margin.left}, ${margin.bottom})`)
         .call(d3.axisLeft(yScale)
             .ticks(5)
             .tickFormat(d3.format("0.1r"))
-    )
+    );
 
     // y axis gridlines
     svg.select(".yAxis")
