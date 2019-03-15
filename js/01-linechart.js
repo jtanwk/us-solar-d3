@@ -17,7 +17,7 @@ function makePlot1(data) {
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     /**************************
     ***** REMOVE OLD DATA *****
@@ -34,7 +34,7 @@ function makePlot1(data) {
         'Hydroelectric, Commercial': {column: 'hydroelectriccommercial'},
         'Hydroelectric, Utility': {column: 'hydroelectricutility'},
         'Solar, Commercial': {column: 'solarcommercial'},
-        'Solar. Industrial': {column: 'solarindustrial'},
+        'Solar, Industrial': {column: 'solarindustrial'},
         'Solar, Residential': {column: 'solarresidential'},
         'Solar, Utility': {column: 'solarutility'},
         'Wind, Commercial': {column: 'windcommercial'},
@@ -86,7 +86,7 @@ function makePlot1(data) {
     const yAxis = svg.append("g")
         .attr("class", "yAxis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).tickValues([10, 100, 1000, 10000, 100000]));
 
     /****************
     ***** LINES *****
@@ -125,8 +125,8 @@ function makePlot1(data) {
         yObjs[y].path = plot.append("path")
             .datum(data)
             .attr("class", "line")
-            .style("fill", "none")
-            .style("stroke", "black")
+            .attr("fill", "none")
+            .attr("stroke", "black")
             .attr("d", yObjs[y].line)
             .attr("id", y);
 
@@ -135,7 +135,7 @@ function makePlot1(data) {
         var totalLength = yObjs[y].path.node().getTotalLength();
 
         yObjs[y].path
-            .style("opacity", 1)
+            .attr("opacity", 1)
             .attr("stroke-dasharray", totalLength + " " + totalLength)
             .attr("stroke-dashoffset", totalLength)
             .transition()
@@ -153,7 +153,7 @@ function makePlot1(data) {
         'hydroelectriccommercial': 'Hydroelectric, Commercial',
         'hydroelectricutility': 'Hydroelectric, Utility',
         'solarcommercial': 'Solar, Commercial',
-        'solarindustrial': 'Solar. Industrial',
+        'solarindustrial': 'Solar, Industrial',
         'solarresidential': 'Solar, Residential',
         'solarutility': 'Solar, Utility',
         'windcommercial': 'Wind, Commercial',
@@ -173,6 +173,7 @@ function makePlot1(data) {
         .enter()
         .append("text")
         .attr("class", "lineLabel")
+        .attr("id", function(d) {return labelDict[d.label];})
         .attr("x", function(d) {return xScale(2016.5);})
         .attr("y", function(d) {return yScale(d.value);})
         .text(function(d) {return labelDict[d.label];})
@@ -185,10 +186,11 @@ function makePlot1(data) {
                 return 0;
             }
         })
-        .style("opacity", 0)
+        .attr("fill", "#000000")
+        .attr("opacity", 0)
         .transition()
         .duration(DURATION)
-        .style("opacity", 1);
+        .attr("opacity", 1);
 
 
     /*************************

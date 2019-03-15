@@ -17,7 +17,7 @@ function updatePlot1(data) {
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     /**************************
     ***** REMOVE OLD DATA *****
@@ -48,12 +48,14 @@ function updatePlot1(data) {
     const THEME_GREY = "#DDDDDD";
 
     plot.selectAll("path")
+        .merge(plot)
         .transition()
         .duration(DURATION)
-        .style("stroke", function(d) {
-            if (solarLabels.includes(d.id)) {
+        .attr("stroke", function(d) {
+            const id = this.getAttribute('id');
+            if (solarLabels.includes(id)) {
                 return THEME_ORANGE;
-            } else if (d.id === "Solar, Residential") {
+            } else if (id === "Solar, Residential") {
                 return THEME_PURPLE;
             } else {
                 return THEME_GREY;
@@ -67,10 +69,11 @@ function updatePlot1(data) {
     plot.selectAll(".lineLabel")
         .transition()
         .duration(DURATION)
-        .style("fill", function(d) {
-            if (solarLabels.includes(d.id)) {
+        .attr("fill", function(d) {
+            const id = this.getAttribute('id');
+            if (solarLabels.includes(id)) {
                 return THEME_ORANGE;
-            } else if (d.id === "Solar, Residential") {
+            } else if (id === "Solar, Residential") {
                 return THEME_PURPLE;
             } else {
                 return THEME_GREY;

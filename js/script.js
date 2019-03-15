@@ -12,14 +12,9 @@ LIBRARIES LOADED IN GLOBAL:
 */
 
 /*
-Office hours questions 3/14:
-1. Any way to pass data to scrollama handlers without using globals?
-2. What can I do about line chart yscale?
-2. Why is my map still loading so slowly? Any other way to minimize?
-    - Should I load the topojson separately from the sun/panel data?
-    - Why are the colors not what I expect them to be?
-    - Why is my map moving upwards so quickly? What can I do to add a buffer below?
-3. What can I do about up-scroll transitions? Do I need to do whole new constructor fns?
+Unresolved follow up items from OH 3/14:
+1. Why is my map still loading so slowly? Any other way to minimize? - DO THE Z-INDEX THING
+2. Why are the colors not what I expect them to be? - TRIAL AND ERROR
 */
 
 
@@ -160,6 +155,7 @@ Promise.all([
     d3.json("data/processed-data/gen-by-year.json"),
     d3.json("data/processed-data/gen-ghi-panels-2016.json"),
     d3.json("data/processed-data/map-data.topojson")
+        // .then(d => )
 ]).then(results => {
     // assign separate references for each dataset
     // if using globals are bad I don't yet know a way around this

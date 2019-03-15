@@ -183,7 +183,7 @@ p {
 .lineLabel {
     font-family: "Asap";
     font-size: 10px;
-    color: #000000;
+    /* color: #000000; */
 }
 
 /* Bar chart labels */

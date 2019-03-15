@@ -17,7 +17,7 @@ function makePlot5(data) {
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     var key = function(d) {
         return d.geoid;
@@ -81,11 +81,12 @@ function makePlot5(data) {
     // http://bl.ocks.org/jfreyre/b1882159636cc9e1283a
     var colorDomain = computeDomain(data.features, 'sun');
     console.log(colorDomain);
+
     var colorScale = d3.scaleLinear()
         .domain(colorDomain)
-        .interpolate(d3.interpolateHcl)
-        .range([d3.rgb(THEME_PURPLE), d3.rgb(THEME_ORANGE)]);
-
+        // .interpolate(d3.interpolateHcl)
+        .range([(THEME_PURPLE), (THEME_ORANGE)]);
+        console.log(THEME_PURPLE, THEME_ORANGE)
     // circle area scale
     var areaDomain = computeDomain(data.features, 'panels_per_10k');
     var areaScale = d3.scaleSqrt()
@@ -125,6 +126,8 @@ function makePlot5(data) {
     function getSize(d) {
         return d.properties.panels_per_10k;
     }
+    const trans = d3.transition()
+        .duration(5000);
 
     plot.selectAll(".centroid")
         .data(data.features)
