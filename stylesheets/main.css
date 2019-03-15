@@ -186,6 +186,12 @@ p {
     /* color: #000000; */
 }
 
+/* Dot plot labels */
+.pointLabel {
+    font-family: "Asap";
+    font-size: 10px;    
+}
+
 /* Bar chart labels */
 .barLabels {
     font-family: "Asap";

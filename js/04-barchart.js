@@ -10,14 +10,14 @@ function makePlot4(data) {
 
     const width = bbox.width;
     const height = bbox.height;
-    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+    const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     var key = function(d) {
         return d.state;
@@ -160,10 +160,26 @@ function makePlot4(data) {
     ***** BAR LABELS *****
     *********************/
 
+    // transition out horizontal labels
+    plot.selectAll(".pointLabel")
+        .data(data, key)
+        .transition()
+        .duration(DURATION)
+        .attr("x", d => xBandScale(d.state))
+        .attr("y", d => yScale(d.panels_per_10k))
+        .attr("text-anchor", "start")
+        .transition()
+        .delay(0.5 * DURATION)
+        .duration(0.5 * DURATION)
+        .attr("opacity", 0);
+
+    // transition in vertical labels
     plot.selectAll(".barLabels")
         .data(data)
         .enter()
         .append("text")
+        .transition()
+        .delay(DURATION)
         .attr("class", d => {
             if (d.region == "Northeast") {
                 return "barLabels purple";
@@ -186,10 +202,10 @@ function makePlot4(data) {
         .attr("transform", d => {
             return `rotate(-90, ${xBandScale(d.state)}, ${yScale(d.panels_per_10k)})`;
         })
-        .style("opacity", 0)
+        .attr("opacity", 0)
         .transition()
-        .delay(DURATION)
-        .style("opacity", 1);
+        .duration(DURATION)
+        .attr("opacity", 1);
 
     /*************************
     ***** TITLE, CAPTION *****

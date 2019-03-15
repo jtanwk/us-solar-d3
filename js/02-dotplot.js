@@ -10,14 +10,14 @@ function makePlot2(data) {
 
     const width = bbox.width;
     const height = bbox.height;
-    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+    const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     var key = function(d) {
         return d.state;
@@ -27,7 +27,36 @@ function makePlot2(data) {
     ***** REMOVE OLD DATA *****
     **************************/
 
-    var g = svg.selectAll("*").remove()
+    // var g = svg.selectAll("*").remove()
+    svg.select("#header").remove();
+    svg.select("#footer").remove();
+
+    svg.selectAll("path")
+        // .attr("transform", `translate(${0}, ${0})`)
+        .transition()
+        .duration(DURATION)
+        .attr("opacity", 0)
+        .remove();
+
+    // remove all other labels
+    svg.select("#plot")
+        .selectAll(".lineLabel")
+        .filter(function(d) {
+            const id = this.getAttribute('id');
+            return id != "Solar, Residential"
+        })
+        .remove();
+
+    // let Solar Residential label persist a little longer
+    svg.select("#plot")
+        .selectAll(".lineLabel")
+        .filter(function(d) {
+            const id = this.getAttribute('id');
+            return id === "Solar, Residential"
+        })
+        .transition()
+        .delay(2 * DURATION)
+        .attr("opacity", 0);
 
     /*************************
     ***** DATA WRANGLING *****
@@ -58,16 +87,18 @@ function makePlot2(data) {
     ***************************************/
 
     // x axis
-    const xaxis = svg.append("g")
-        .attr("class", "xAxis")
+    const xaxis = svg.select(".xAxis")
+        .transition()
+        .duration(DURATION)
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
-        .call(d3.axisTop(xScale)
+        .call(d3.axisBottom(xScale)
             .ticks(4)
             .tickFormat(d => d + "x")
     );
 
     // x axis gridlines
-    xaxis.append("g")
+    svg.select(".xAxis")
+        .append("g")
         .attr("class", "grid")
         .call(d3.axisBottom(xScale)
             .ticks(4)
@@ -80,29 +111,41 @@ function makePlot2(data) {
         .enter()
         .append("text")
         .attr("class", "xLabel")
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.bottom})`)
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.bottom + 10})`)
         .text(d => d.label)
         .attr("text-anchor", "middle")
         .attr("x", (0.5 * (plotWidth + margin.left)))
         .attr("y", margin.top - 25);
 
     // y axis
-    const yaxis = svg.append("g")
-        .attr("class", "yAxis")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    const yaxis = svg.select(".yAxis")
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+        .call(d3.axisLeft(yScale).ticks(0))
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     /*****************
     ***** POINTS *****
     ******************/
 
-    const plot = svg.append("g")
-        .attr("id", "plot")
+    const plot = svg.select("#plot")
         .attr("transform", `translate(${margin.left}, ${margin.bottom})`);
 
     plot.selectAll(".points")
         .data(data, key)
         .enter()
         .append("circle")
+        .attr("id", d => d.state)
+        .attr("cy", yScale(40.5))
+        .attr("cx", xScale(30))
+        .attr("r", 5)
+        .attr("class", "points purple")
+        .transition()
+        .duration(2 * DURATION)
+        .attr("r", 3)
+        .transition()
+        .duration(DURATION)
         .attr("class", d => {
             if (d.dev_fr_median > 1) {
                 return "points orange";
@@ -110,13 +153,45 @@ function makePlot2(data) {
                 return "points purple";
             }
         })
-        .attr("id", d => d.state)
         .attr("cy", (d, i) => yScale(i))
-        .attr("r", 3)
-        .attr("cx", xScale(1))
+        .attr("cx", d => xScale(d.dev_fr_median));
+
+    /***********************
+    ***** POINT LABELS *****
+    ***********************/
+
+    plot.selectAll(".pointLabel")
+        .data(data, key)
+        .enter()
+        .append("text")
+        .attr("class", d => {
+            if (d.dev_fr_median > 1) {
+                return "pointLabel orange";
+            } else {
+                return "pointLabel purple";
+            }
+        })
+        .attr("y", yScale(40.5))
+        .attr("x", xScale(30))
+        .text(d => d.state)
+        .attr("text-anchor", "start")
+        .attr("dominant-baseline", "middle")
+        .attr("opacity", 0)
+        .transition()
+        .duration(2 * DURATION)
+        .attr("opacity", 0)
         .transition()
         .duration(DURATION)
-        .attr("cx", d => xScale(d.dev_fr_median));
+        .attr("opacity", 1)
+        .attr("y", (d, i) => yScale(i))
+        .attr("x", d => {
+            if (d.dev_fr_median > 1) {
+                return xScale(d.dev_fr_median * 1.15);
+            } else {
+                return xScale(d.dev_fr_median * 0.75);
+            }
+        });
+
 
     /*************************
     ***** TITLE, CAPTION *****

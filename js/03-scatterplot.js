@@ -10,14 +10,14 @@ function makePlot3(data) {
 
     const width = bbox.width;
     const height = bbox.height;
-    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+    const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
     const svg = d3.select("#chart").select("svg");
 
-    const DURATION = 2000;
+    const DURATION = 1000;
 
     var key = function(d) {
         return d.state;
@@ -31,9 +31,6 @@ function makePlot3(data) {
     // var g = svg.selectAll("*").remove()
     d3.select("#header").remove();
     d3.select("#footer").remove();
-
-
-
 
     /*************************
     ***** DATA WRANGLING *****
@@ -128,6 +125,27 @@ function makePlot3(data) {
         .attr("cx", d => xScale(d.sun))
         .attr("cy", (d, i) => yScale(d.btu_per_10k))
         .attr("r", 3);
+
+    /***********************
+    ***** POINT LABELS *****
+    ***********************/
+
+    plot.selectAll(".pointLabel")
+        .data(data, key)
+        .transition()
+        .duration(DURATION)
+        .attr("class", d => {
+            if (d.region == "Northeast") {
+                return "pointLabel purple";
+            } else {
+                return "pointLabel grey";
+            }
+        })
+        .attr("dominant-baseline", "auto")
+        .attr("x", d => xScale(d.sun))
+        .attr("y", (d, i) => yScale(d.btu_per_10k))
+        .attr("dx", 7)
+        .attr("dy", -7)
 
     /*************************
     ***** TITLE, CAPTION *****

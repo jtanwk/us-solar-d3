@@ -10,7 +10,7 @@ function makePlot1(data) {
 
     const width = bbox.width;
     const height = bbox.height;
-    const margin = {top: 100, left: 50, right: 50, bottom: 50};
+    const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
@@ -81,7 +81,7 @@ function makePlot1(data) {
     const xAxis = svg.append("g")
         .attr("class", "xAxis")
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
     const yAxis = svg.append("g")
         .attr("class", "yAxis")
@@ -139,7 +139,7 @@ function makePlot1(data) {
             .attr("stroke-dasharray", totalLength + " " + totalLength)
             .attr("stroke-dashoffset", totalLength)
             .transition()
-              .duration(2000)
+              .duration(DURATION)
               .attr("stroke-dashoffset", 0);
     }
 
