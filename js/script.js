@@ -13,8 +13,7 @@ LIBRARIES LOADED IN GLOBAL:
 
 /*
 Unresolved follow up items from OH 3/14:
-1. Why is my map still loading so slowly? Any other way to minimize? - DO THE Z-INDEX THING
-2. Why are the colors not what I expect them to be? - TRIAL AND ERROR
+Why are the colors not what I expect them to be? - TRIAL AND ERROR
 */
 
 // scollama code heavily adapted from
@@ -82,14 +81,14 @@ function handleStepEnter(response) {
             updatePlot1(data_1);
             break;
         case 2:
-            makePlot2(data_234);
+            makePlot2(data_234, response);
             break;
         case 3:
-            makePlot3(data_234);
+            makePlot3(data_234, response);
             break;
         case 4:
             toggleChart(response);
-            makePlot4(data_234);
+            makePlot4(data_234, response);
             break;
         case 5:
             toggleChart(response);
@@ -107,19 +106,21 @@ function toggleChart(response) {
     var dataStep = Number(response.element.dataset.step);
     chart.classed('is-active', false);
 
-    // if moving down to step 5,
+    // if moving down to step 5, switch divs
     if (response.index === 5 && response.direction === "down") {
         chart.classed('is-active', function(d, i) {
             return i === 1;
         });
-        // console.log("switching to map");
     } else {
         chart.classed('is-active', function(d, i) {
             return i === 0;
         });
-        // console.log("switching from map");
-    }
 
+        // reset circles
+        d3.select("#mapPlot").select("svg").select("#plot")
+            .selectAll(".centroid")
+            .attr("opacity", 0);
+    };
 
 }
 
@@ -196,30 +197,13 @@ Promise.all([
     this.data_5 = topology;
 
     // Go!
-    scroll_init();
-    svg_init();
-    makePlot5(data_5);
+    scroll_init();  // initialize scrollama
+    svg_init(); // initialize svg window
+    makePlot5(data_5); // pre-draw map with invisible circles
 
 }).catch(error => {
     console.log(error);
-    printError();
+    document.getElementById("errMsg").innerHTML = error;
 });
-
-
-// DEFINE ERROR MESSAGE
-function printError() {
-    const message = `
-    | ￣￣￣￣￣ | <br />
-    | &nbsp; ERROR &nbsp; &nbsp; &nbsp; | <br />
-    | &nbsp; LOADING &nbsp;| <br />
-    | &nbsp; DATA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| <br />
-    | ＿＿＿＿＿ | <br />
-    (\\__/) || <br />
-    (•ㅅ• ) || <br />
-    / 　 づ`
-
-    document.getElementById("errMsg").innerHTML = message;
-}
-
 
 //

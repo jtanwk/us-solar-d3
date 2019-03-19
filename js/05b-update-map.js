@@ -4,15 +4,9 @@ function enterPlot5(data) {
     ***** BASIC SETUP *****
     **********************/
 
-    // define constants
-    const DURATION = 1000;
-    const THEME_PURPLE = "#5D2BF0";
-    const THEME_ORANGE = "#FF810F";
-    const MAX_CIRCLE_SIZE = 10;
-
     // dynamic dimension sizing code adapted from
     // https://github.com/d3/d3-selection/issues/128
-    const bbox = d3.select("#mapPlot").node().getBoundingClientRect();
+    const bbox = d3.select("#mapPlot").node().getBoundingClientRect()
 
     const width = bbox.width;
     const height = bbox.height;
@@ -21,17 +15,24 @@ function enterPlot5(data) {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
-    const svg = d3.select("#mapPlot").select("svg");
+    // define constants
+    const DURATION = 1000;
+    const THEME_PURPLE = "#5D2BF0";
+    const THEME_ORANGE = "#FF810F";
+    const MAX_CIRCLE_SIZE = 10;
 
-    var key = function(d) {
-        return d.geoid;
-    };
+    const svg = d3.select("#mapPlot").select("svg");
 
     /*************************
     ***** COUNTY CIRCLES *****
     *************************/
 
     const plot = svg.select("#plot");
+
+    plot
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(0, ${margin.top})`);
 
     plot.selectAll(".centroid")
         .transition()

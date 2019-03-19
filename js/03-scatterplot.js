@@ -1,4 +1,4 @@
-function makePlot3(data) {
+function makePlot3(data, response) {
 
     /**********************
     ***** BASIC SETUP *****
@@ -65,16 +65,29 @@ function makePlot3(data) {
         );
 
     // x axis label
-    svg.selectAll(".xLabel")
-        .data([{"label": "Annual Average Global Horizontal Irradiance (kWh/m^2/day)"}])
-        .transition()
-        .duration(DURATION)
-        .attr("class", "xLabel")
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.bottom + 10})`)
-        .text(d => d.label)
-        .attr("text-anchor", "middle")
-        .attr("x", (0.5 * (plotWidth + margin.left)))
-        .attr("y", margin.top - 25);
+    if (response.direction === "down") {
+        svg.selectAll(".xLabel")
+            .data([{"label": "Annual Average Global Horizontal Irradiance (kWh/m^2/day)"}])
+            .transition()
+            .duration(DURATION)
+            .attr("class", "xLabel")
+            .attr("transform", `translate(0, ${plotHeight + margin.bottom + 10})`)
+            .text(d => d.label)
+            .attr("text-anchor", "middle")
+            .attr("x", (0.5 * (plotWidth + margin.left)))
+            .attr("y", margin.top - 25);
+    } else {
+        svg.selectAll(".xLabel")
+            .data([{"label": "Annual Average Global Horizontal Irradiance (kWh/m^2/day)"}])
+            .enter()
+            .append("text")
+            .attr("class", "xLabel")
+            .attr("transform", `translate(0, ${plotHeight + margin.bottom + 10})`)
+            .text(d => d.label)
+            .attr("text-anchor", "middle")
+            .attr("x", (0.5 * (plotWidth + margin.left)))
+            .attr("y", margin.top - 25);
+    }
 
     /***************************************
     ***** Y AXiS, AXIS LABEL, GRIDLINE *****
@@ -104,31 +117,52 @@ function makePlot3(data) {
 
     const plot = svg.select("#plot");
 
-    // if scrolling up from bars
-    // remove when fully implementing "up" transitions
-    plot.selectAll(".rects").remove();
-    plot.selectAll(".barLabels").remove();
-
     // update points
-    plot.selectAll(".points")
-        .data(data, key)
-        .transition()
-        .duration(DURATION)
-        .attr("class", d => {
-            if (d.region == "Northeast") {
-                return "points purple";
-            } else {
-                return "points grey";
-            }
-        })
-        .attr("id", d => d.state)
-        .attr("cx", d => xScale(d.sun))
-        .attr("cy", (d, i) => yScale(d.btu_per_10k))
-        .attr("r", 3);
+    if (response.direction === "down") {
+        plot.selectAll(".points")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("class", d => {
+                if (d.region == "Northeast") {
+                    return "points purple";
+                } else {
+                    return "points grey";
+                }
+            })
+            .attr("id", d => d.state)
+            .attr("cx", d => xScale(d.sun))
+            .attr("cy", (d, i) => yScale(d.btu_per_10k))
+            .attr("r", 3);
+    } else {
+        plot.selectAll(".rects").remove();
+
+        plot.selectAll(".points")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("class", d => {
+                if (d.region == "Northeast") {
+                    return "points purple";
+                } else {
+                    return "points grey";
+                }
+            })
+            .attr("id", d => d.state)
+            .attr("cx", d => xScale(d.sun))
+            .attr("cy", (d, i) => yScale(d.btu_per_10k))
+            .attr("r", 3);
+
+    }
+
 
     /***********************
     ***** POINT LABELS *****
     ***********************/
+
+    if (response.direction === "up") {
+        plot.selectAll(".barLabels").remove();
+    }
 
     plot.selectAll(".pointLabel")
         .data(data, key)
@@ -146,6 +180,7 @@ function makePlot3(data) {
         .attr("y", (d, i) => yScale(d.btu_per_10k))
         .attr("dx", 7)
         .attr("dy", -7)
+        .attr("opacity", 1)
 
     /*************************
     ***** TITLE, CAPTION *****

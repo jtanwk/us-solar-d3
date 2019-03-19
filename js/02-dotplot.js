@@ -1,4 +1,4 @@
-function makePlot2(data) {
+function makePlot2(data, response) {
 
     /**********************
     ***** BASIC SETUP *****
@@ -31,32 +31,35 @@ function makePlot2(data) {
     svg.select("#header").remove();
     svg.select("#footer").remove();
 
-    svg.selectAll("path")
-        // .attr("transform", `translate(${0}, ${0})`)
-        .transition()
-        .duration(DURATION)
-        .attr("opacity", 0)
-        .remove();
+    if (response.direction === "down") {
 
-    // remove all other labels
-    svg.select("#plot")
-        .selectAll(".lineLabel")
-        .filter(function(d) {
-            const id = this.getAttribute('id');
-            return id != "Solar, Residential"
-        })
-        .remove();
+        svg.selectAll("path")
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 0)
+            .remove();
 
-    // let Solar Residential label persist a little longer
-    svg.select("#plot")
-        .selectAll(".lineLabel")
-        .filter(function(d) {
-            const id = this.getAttribute('id');
-            return id === "Solar, Residential"
-        })
-        .transition()
-        .delay(DURATION)
-        .attr("opacity", 0);
+        // remove all other labels
+        svg.select("#plot")
+            .selectAll(".lineLabel")
+            .filter(function(d) {
+                const id = this.getAttribute('id');
+                return id != "Solar, Residential"
+            })
+            .remove();
+
+        // let Solar Residential label persist a little longer
+        svg.select("#plot")
+            .selectAll(".lineLabel")
+            .filter(function(d) {
+                const id = this.getAttribute('id');
+                return id === "Solar, Residential"
+            })
+            .transition()
+            .delay(DURATION)
+            .attr("opacity", 0);
+
+    }
 
     /*************************
     ***** DATA WRANGLING *****
@@ -74,7 +77,7 @@ function makePlot2(data) {
 
     const xScale = d3.scaleLog()
         .domain(d3.extent(data, d => d.dev_fr_median))
-        .range([margin.right, plotWidth])
+        .range([margin.left, plotWidth])
         .nice();
 
     const yScale = d3.scaleLinear()
@@ -90,7 +93,7 @@ function makePlot2(data) {
     const xaxis = svg.select(".xAxis")
         .transition()
         .duration(DURATION)
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+        .attr("transform", `translate(0, ${plotHeight + margin.top})`)
         .call(d3.axisBottom(xScale)
             .ticks(4)
             .tickFormat(d => d + "x")
@@ -106,22 +109,31 @@ function makePlot2(data) {
             .tickFormat(""));
 
     // x axis label
-    svg.selectAll(".xLabel")
-        .data([{"label": "Solar Energy per capita Generated (BTUs)"}])
-        .enter()
-        .append("text")
-        .attr("class", "xLabel")
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.bottom + 10})`)
-        .text(d => d.label)
-        .attr("text-anchor", "middle")
-        .attr("x", (0.5 * (plotWidth + margin.left)))
-        .attr("y", margin.top - 25);
+
+    if (response.direction === "down") {
+        svg.selectAll(".xLabel")
+            .data([{"label": "Solar Energy per capita Generated (BTUs)"}])
+            .enter()
+            .append("text")
+            .attr("class", "xLabel")
+            .attr("transform", `translate(0, ${plotHeight + margin.bottom + 10})`)
+            .text(d => d.label)
+            .attr("text-anchor", "middle")
+            .attr("x", (0.5 * (plotWidth + margin.left)))
+            .attr("y", margin.top - 25);
+    } else {
+        svg.selectAll(".xLabel")
+            .data([{"label": "Solar Energy per capita Generated (BTUs)"}])
+            .transition()
+            .duration(DURATION)
+            .text(d => d.label);
+    }
+
 
     // y axis
     const yaxis = svg.select(".yAxis")
         .transition()
         .duration(DURATION)
-        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
         .call(d3.axisLeft(yScale).ticks(0))
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -129,68 +141,114 @@ function makePlot2(data) {
     ***** POINTS *****
     ******************/
 
-    const plot = svg.select("#plot")
-        .attr("transform", `translate(${margin.left}, ${margin.bottom})`);
+    const plot = svg.select("#plot");
 
-    plot.selectAll(".points")
-        .data(data, key)
-        .enter()
-        .append("circle")
-        .attr("id", d => d.state)
-        .attr("cy", yScale(40.5))
-        .attr("cx", xScale(30))
-        .attr("r", 0)
-        .attr("class", "points purple")
-        .transition()
-        .duration(DURATION)
-        .attr("r", 3)
-        .transition()
-        .duration(DURATION)
-        .attr("class", d => {
-            if (d.dev_fr_median > 1) {
-                return "points orange";
-            } else {
-                return "points purple";
-            }
-        })
-        .attr("cy", (d, i) => yScale(i))
-        .attr("cx", d => xScale(d.dev_fr_median));
+    if (response.direction === "down") {
+        plot
+            .transition()
+            .duration(DURATION)
+            .attr("transform", `translate(0, ${margin.top})`);
+
+        plot.selectAll(".points")
+            .data(data, key)
+            .enter()
+            .append("circle")
+            .attr("id", d => d.state)
+            .attr("cy", yScale(40.5))
+            .attr("cx", xScale(30))
+            .attr("r", 0)
+            .attr("class", "points purple")
+            .transition()
+            .duration(DURATION)
+            .attr("r", 3)
+            .transition()
+            .duration(DURATION)
+            .attr("class", d => {
+                if (d.dev_fr_median > 1) {
+                    return "points orange";
+                } else {
+                    return "points purple";
+                }
+            })
+            .attr("cy", (d, i) => yScale(i))
+            .attr("cx", d => xScale(d.dev_fr_median));
+    } else {
+        plot.selectAll(".points")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("class", d => {
+                if (d.dev_fr_median > 1) {
+                    return "points orange";
+                } else {
+                    return "points purple";
+                }
+            })
+            .attr("cy", (d, i) => yScale(i))
+            .attr("cx", d => xScale(d.dev_fr_median));
+    }
+
 
     /***********************
     ***** POINT LABELS *****
     ***********************/
 
-    plot.selectAll(".pointLabel")
-        .data(data, key)
-        .enter()
-        .append("text")
-        .attr("class", d => {
-            if (d.dev_fr_median > 1) {
-                return "pointLabel orange";
-            } else {
-                return "pointLabel purple";
-            }
-        })
-        .attr("y", yScale(40.5))
-        .attr("x", xScale(30))
-        .text(d => d.state)
-        .attr("text-anchor", "start")
-        .attr("dominant-baseline", "middle")
-        .attr("opacity", 0)
-        .transition()
-        .duration(DURATION)
-        .attr("opacity", 0)
-        .transition()
-        .duration(DURATION)
-        .attr("opacity", 1)
-        .attr("y", (d, i) => yScale(i))
-        .attr("x", d => {
-            if (d.dev_fr_median > 1) {
-                return xScale(d.dev_fr_median * 1.15);
-            } else {
-                return xScale(d.dev_fr_median * 0.75);
-            }
-        });
+    if (response.direction === "down") {
+        plot.selectAll(".pointLabel")
+            .data(data, key)
+            .enter()
+            .append("text")
+            .attr("class", d => {
+                if (d.dev_fr_median > 1) {
+                    return "pointLabel orange";
+                } else {
+                    return "pointLabel purple";
+                }
+            })
+            .attr("y", yScale(40.5))
+            .attr("x", xScale(30))
+            .text(d => d.state)
+            .attr("text-anchor", "start")
+            .attr("dominant-baseline", "middle")
+            .attr("opacity", 0)
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 0)
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 1)
+            .attr("y", (d, i) => yScale(i))
+            .attr("x", d => {
+                if (d.dev_fr_median > 1) {
+                    return xScale(d.dev_fr_median * 1.15);
+                } else {
+                    return xScale(d.dev_fr_median * 0.75);
+                }
+            });
+    } else {
+        plot.selectAll(".pointLabel")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("class", d => {
+                if (d.dev_fr_median > 1) {
+                    return "pointLabel orange";
+                } else {
+                    return "pointLabel purple";
+                }
+            })
+            .attr("y", (d, i) => yScale(i))
+            .attr("x", d => {
+                if (d.dev_fr_median > 1) {
+                    return xScale(d.dev_fr_median * 1.15);
+                } else {
+                    return xScale(d.dev_fr_median * 0.75);
+                }
+            })
+            .attr("dx", 0)
+            .attr("dy", 0)
+            .attr("dominant-baseline", "middle");
+    }
 
 
     /*************************

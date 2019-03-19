@@ -1,4 +1,4 @@
-function makePlot4(data) {
+function makePlot4(data, response) {
 
     /**********************
     ***** BASIC SETUP *****
@@ -30,8 +30,6 @@ function makePlot4(data) {
     // potentially find smoother transitions for some of these
     d3.select("#header").remove();
     d3.select("#footer").remove();
-    d3.select(".grid").remove();
-    d3.select(".xAxis").remove();
     d3.select(".xLabel").remove();
 
     /*************************
@@ -82,8 +80,17 @@ function makePlot4(data) {
         .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(4)
-            .tickSize(-plotWidth)
+            .tickSize(-(plotWidth + margin.right))
             .tickFormat(""));
+
+    // x axis
+    const xaxis = svg.select(".xAxis")
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+        .call(d3.axisBottom(xBandScale)
+            .tickValues([])
+        );
 
 
     /***************
@@ -91,6 +98,11 @@ function makePlot4(data) {
     ***************/
 
     const plot = svg.select("#plot");
+
+    plot
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // transition out points
     plot.selectAll(".points")
@@ -160,52 +172,62 @@ function makePlot4(data) {
     ***** BAR LABELS *****
     *********************/
 
-    // transition out horizontal labels
-    plot.selectAll(".pointLabel")
-        .data(data, key)
-        .transition()
-        .duration(DURATION)
-        .attr("x", d => xBandScale(d.state))
-        .attr("y", d => yScale(d.panels_per_10k))
-        .attr("text-anchor", "start")
-        .transition()
-        .delay(0.5 * DURATION)
-        .duration(0.5 * DURATION)
-        .attr("opacity", 0);
+    if (response.direction === "down") {
 
-    // transition in vertical labels
-    plot.selectAll(".barLabels")
-        .data(data)
-        .enter()
-        .append("text")
-        .transition()
-        .delay(DURATION)
-        .attr("class", d => {
-            if (d.region == "Northeast") {
-                return "barLabels purple";
-            } else {
-                return "barLabels grey";
-            }
-        })
-        .text(d => d.state)
-        .attr("x", d => xBandScale(d.state))
-        .attr("y", d => yScale(d.panels_per_10k))
-        .attr("dx", d => {
-            if (d.panels_per_10k > 1) {
-                return 5;
-            } else {
-                return -20;
-            }
-        })
-        .attr("dy", "0.7em")
-        .attr("text-anchor", "start")
-        .attr("transform", d => {
-            return `rotate(-90, ${xBandScale(d.state)}, ${yScale(d.panels_per_10k)})`;
-        })
-        .attr("opacity", 0)
-        .transition()
-        .duration(DURATION)
-        .attr("opacity", 1);
+        // transition out horizontal labels
+        plot.selectAll(".pointLabel")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("x", d => xBandScale(d.state))
+            .attr("y", d => yScale(d.panels_per_10k))
+            .attr("text-anchor", "start")
+            .transition()
+            .delay(0.5 * DURATION)
+            .duration(0.5 * DURATION)
+            .attr("opacity", 0);
+
+        // transition in vertical labels
+        plot.selectAll(".barLabels")
+            .data(data)
+            .enter()
+            .append("text")
+            .transition()
+            .delay(DURATION)
+            .attr("class", d => {
+                if (d.region == "Northeast") {
+                    return "barLabels purple";
+                } else {
+                    return "barLabels grey";
+                }
+            })
+            .text(d => d.state)
+            .attr("x", d => xBandScale(d.state))
+            .attr("y", d => yScale(d.panels_per_10k))
+            .attr("dx", d => {
+                if (d.panels_per_10k > 1) {
+                    return 5;
+                } else {
+                    return -20;
+                }
+            })
+            .attr("dy", "0.7em")
+            .attr("text-anchor", "start")
+            .attr("transform", d => {
+                return `rotate(-90, ${xBandScale(d.state)}, ${yScale(d.panels_per_10k)})`;
+            })
+            .attr("opacity", 0)
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 1);
+    } else {
+        plot.selectAll(".barLabels")
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 1)
+    }
+
+
 
     /*************************
     ***** TITLE, CAPTION *****
