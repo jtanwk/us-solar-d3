@@ -89,6 +89,21 @@ https://pudding.cool/process/introducing-scrollama/ */
   /* border: 1px solid #000000; */
 }
 
+.scroll__graphic .plotArea.is-active{
+    position: fixed;
+    right: 1rem;
+    top: 50%;
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    opacity: 1;
+    z-index: 1;
+
+    /* background-color: #FFFFFF;
+    border: 1px solid red; */
+}
+
 .scroll__graphic .plotArea {
     position: fixed;
     right: 1rem;
@@ -97,8 +112,11 @@ https://pudding.cool/process/introducing-scrollama/ */
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
 
+    opacity: 0;
+    z-index: -1;
+
     /* background-color: #FFFFFF;
-    border: 1px solid red; */
+    border: 1px solid blue; */
 }
 
 .scroll__text {
@@ -189,7 +207,7 @@ p {
 /* Dot plot labels */
 .pointLabel {
     font-family: "Asap";
-    font-size: 10px;    
+    font-size: 10px;
 }
 
 /* Bar chart labels */

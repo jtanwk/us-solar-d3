@@ -17,7 +17,6 @@ Unresolved follow up items from OH 3/14:
 2. Why are the colors not what I expect them to be? - TRIAL AND ERROR
 */
 
-
 // scollama code heavily adapted from
 //https://pudding.cool/process/introducing-scrollama/
 
@@ -89,15 +88,39 @@ function handleStepEnter(response) {
             makePlot3(data_234);
             break;
         case 4:
+            toggleChart(response);
             makePlot4(data_234);
             break;
         case 5:
-            makePlot5(data_5);
+            toggleChart(response);
+            enterPlot5(data_5);
             break;
     }
 
     // redraw chart upon display
     handleResize();
+}
+
+function toggleChart(response) {
+
+    // toggle z-index
+    var dataStep = Number(response.element.dataset.step);
+    chart.classed('is-active', false);
+
+    // if moving down to step 5,
+    if (response.index === 5 && response.direction === "down") {
+        chart.classed('is-active', function(d, i) {
+            return i === 1;
+        });
+        // console.log("switching to map");
+    } else {
+        chart.classed('is-active', function(d, i) {
+            return i === 0;
+        });
+        // console.log("switching from map");
+    }
+
+
 }
 
 function setupStickyfill() {
@@ -142,11 +165,15 @@ function svg_init() {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.bottom - margin.top;
 
-    const svg = d3.select("#chart")
+    d3.select("#chart")
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
-        .attr("transform", `translate(0, -25)`);
+        .attr("height", height);
+
+    d3.select("#mapPlot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
 }
 
@@ -171,6 +198,7 @@ Promise.all([
     // Go!
     scroll_init();
     svg_init();
+    makePlot5(data_5);
 
 }).catch(error => {
     console.log(error);

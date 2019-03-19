@@ -55,7 +55,7 @@ function makePlot2(data) {
             return id === "Solar, Residential"
         })
         .transition()
-        .delay(2 * DURATION)
+        .delay(DURATION)
         .attr("opacity", 0);
 
     /*************************
@@ -139,10 +139,10 @@ function makePlot2(data) {
         .attr("id", d => d.state)
         .attr("cy", yScale(40.5))
         .attr("cx", xScale(30))
-        .attr("r", 4)
+        .attr("r", 0)
         .attr("class", "points purple")
         .transition()
-        .duration(2 * DURATION)
+        .duration(DURATION)
         .attr("r", 3)
         .transition()
         .duration(DURATION)
@@ -178,7 +178,7 @@ function makePlot2(data) {
         .attr("dominant-baseline", "middle")
         .attr("opacity", 0)
         .transition()
-        .duration(2 * DURATION)
+        .duration(DURATION)
         .attr("opacity", 0)
         .transition()
         .duration(DURATION)
