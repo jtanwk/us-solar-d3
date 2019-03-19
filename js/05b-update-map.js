@@ -29,11 +29,6 @@ function enterPlot5(data) {
 
     const plot = svg.select("#plot");
 
-    plot
-        .transition()
-        .duration(DURATION)
-        .attr("transform", `translate(0, ${margin.top})`);
-
     plot.selectAll(".centroid")
         .transition()
         .duration(DURATION)

@@ -59,7 +59,7 @@ function makePlot1(data) {
 
     const xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d.year))
-        .range([0, plotWidth - 100]);
+        .range([0, plotWidth - margin.right - margin.left]);
 
     function max(fn) {
         return d3.max(data, fn);
@@ -86,7 +86,19 @@ function makePlot1(data) {
     const yAxis = svg.append("g")
         .attr("class", "yAxis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
-        .call(d3.axisLeft(yScale).tickValues([10, 100, 1000, 10000, 100000]));
+        .call(d3.axisLeft(yScale)
+            .tickValues([10, 100, 1000, 10000, 100000])
+        );
+
+    svg.select(".yAxis")
+        .append("g")
+        .attr("class", "grid")
+        .call(d3.axisLeft(yScale)
+            .ticks(5)
+            .tickSize(-(plotWidth - margin.right - margin.left))
+            .tickValues([10, 100, 1000, 10000, 100000])
+            .tickFormat("")
+        );
 
     /****************
     ***** LINES *****
@@ -191,7 +203,6 @@ function makePlot1(data) {
         .transition()
         .duration(DURATION)
         .attr("opacity", 1);
-
 
     /*************************
     ***** TITLE, CAPTION *****

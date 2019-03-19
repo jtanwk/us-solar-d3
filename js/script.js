@@ -12,8 +12,17 @@ LIBRARIES LOADED IN GLOBAL:
 */
 
 /*
+TODO:
+
 Unresolved follow up items from OH 3/14:
 Why are the colors not what I expect them to be? - TRIAL AND ERROR
+
+If you scroll from start to barchart (#4) and then back one,
+the bars don't go away and I get this error:
+"Uncaught DOMException: Failed to execute 'insertBefore' on 'Node'""
+
+- mouseover tooltips
+- insert links in data source
 */
 
 // scollama code heavily adapted from

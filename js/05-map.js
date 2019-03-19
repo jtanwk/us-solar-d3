@@ -33,18 +33,9 @@ function makePlot5(data) {
 
     var g = svg.selectAll("*").remove()
 
-    // potentially find smoother transitions for some of these
-    // d3.select("#header").remove();
-    // d3.select("#footer").remove();
-    // d3.select(".grid").remove();
-    // d3.select(".xAxis").remove();
-    // d3.select(".xLabel").remove();
-
     /*************************
     ***** DATA WRANGLING *****
     *************************/
-
-
 
 
     /******************************
@@ -63,16 +54,6 @@ function makePlot5(data) {
         }
         return [min, max];
     }
-
-    // From Andrew McNutt's CAPP 30239 Week 8 tutorial
-    // function computeDomain(data, key) {
-    //   return data.reduce((acc, row) => {
-    //     return {
-    //       min: Math.min(acc.min, row.properties[key]),
-    //       max: Math.max(acc.max, row.properties[key])
-    //     };
-    //   }, {min: Infinity, max: -Infinity});
-    // }
 
     // circle color scale
     // interpolation code adapted from
@@ -100,7 +81,7 @@ function makePlot5(data) {
     const plot = svg.append("g")
          .attr("id", "plot")
          .attr("class", "map")
-         .attr("transform", `translate(${margin.left}, ${margin.bottom})`);
+         .attr("transform", `translate(0, ${margin.bottom})`);
 
     // choropleth code adapted from Scott Murray's D3 book (p. 290)
     plot.selectAll("path")
@@ -115,7 +96,6 @@ function makePlot5(data) {
 
     // code for calculating centroids adapted from
     // https://bl.ocks.org/curran/55d327542393530662c3
-
     function getCentroid(d) {
         return path.centroid(d);
     }
@@ -144,7 +124,8 @@ function makePlot5(data) {
             } else {
                 return "#DDDDDD";
             }
-        });
+        })
+        .attr("stroke", "#000000");
 
 
     /*************************
