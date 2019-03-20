@@ -1,4 +1,4 @@
-function updatePlot1(data) {
+function updatePlot1(data, response) {
 
     /**********************
     ***** BASIC SETUP *****
@@ -33,7 +33,8 @@ function updatePlot1(data) {
     ***** LINES *****
     *****************/
 
-    var plot = svg.select("#plot");
+    var plot = svg.select("#plot")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     var solarLabels = [
         "Solar, Utility",
@@ -46,25 +47,64 @@ function updatePlot1(data) {
     const THEME_ORANGE = "#FF810F";
     const THEME_GREY = "#DDDDDD";
 
-    plot.selectAll("path")
-        .merge(plot)
-        .transition()
-        .duration(0.5 * DURATION)
-        .attr("stroke", function(d) {
-            const id = this.getAttribute('id');
-            if (solarLabels.includes(id)) {
-                return THEME_ORANGE;
-            } else if (id === "Solar, Residential") {
-                return THEME_PURPLE;
-            } else {
-                return THEME_GREY;
-            }
-        })
+
+    if (response.direction === "down") {
+
+        // update selected line colors
+        plot.selectAll("path")
+            .transition()
+            .duration(0.5 * DURATION)
+            .attr("stroke", function(d) {
+                const id = this.getAttribute('id');
+                if (solarLabels.includes(id)) {
+                    return THEME_ORANGE;
+                } else if (id === "Solar, Residential") {
+                    return THEME_PURPLE;
+                } else {
+                    return THEME_GREY;
+                }
+            });
+
+    } else {
+
+        // transition out points
+        plot.selectAll(".points")
+            .transition()
+            .duration(DURATION)
+            .attr("r", 0)
+            .remove();
+
+        // transition out point labels
+        plot.selectAll(".pointLabel")
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 0)
+            .remove();
+
+        makePlot1(data, response);
+
+        // update selected line colors
+        plot.selectAll("path")
+            .transition()
+            .duration(DURATION)
+            .attr("stroke", function(d) {
+                const id = this.getAttribute('id');
+                if (solarLabels.includes(id)) {
+                    return THEME_ORANGE;
+                } else if (id === "Solar, Residential") {
+                    return THEME_PURPLE;
+                } else {
+                    return THEME_GREY;
+                }
+            });
+
+    }
 
     /**********************
     ***** LINE LABELS *****
     **********************/
 
+    // update line label colors
     plot.selectAll(".lineLabel")
         .transition()
         .duration(0.5 * DURATION)
@@ -77,7 +117,8 @@ function updatePlot1(data) {
             } else {
                 return THEME_GREY;
             }
-        })
+        });
+
 
 
 }

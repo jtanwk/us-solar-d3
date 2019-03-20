@@ -1,4 +1,4 @@
-function makePlot1(data) {
+function makePlot1(data, response) {
 
     /**********************
     ***** BASIC SETUP *****
@@ -158,6 +158,7 @@ function makePlot1(data) {
               .attr("stroke-dashoffset", 0);
     }
 
+
     /**********************
     ***** LINE LABELS *****
     **********************/
@@ -183,29 +184,68 @@ function makePlot1(data) {
         return {label: row[0], value: row[1]};
     });
 
-    plot.selectAll('.lineLabel')
-        .data(labelData.filter(function(d) {return d.label != "year";}))
-        .enter()
-        .append("text")
-        .attr("class", "lineLabel")
-        .attr("id", function(d) {return labelDict[d.label];})
-        .attr("x", function(d) {return xScale(2016.5);})
-        .attr("y", function(d) {return yScale(d.value);})
-        .text(function(d) {return labelDict[d.label];})
-        .attr("dy", function(d) {
-            if (d.label === "windutility") {
-                return 5;
-            } else if (d.label === "hydroelectricutility") {
-                return -2;
-            } else {
-                return 0;
-            }
-        })
-        .attr("fill", "#000000")
-        .attr("opacity", 0)
-        .transition()
-        .duration(DURATION)
-        .attr("opacity", 1);
+    if (response.direction === "down") {
+
+        // draw new line labels
+        plot.selectAll('.lineLabel')
+            .data(labelData.filter(function(d) {return d.label != "year";}))
+            .enter()
+            .append("text")
+            .attr("class", "lineLabel")
+            .attr("id", function(d) {return labelDict[d.label];})
+            .attr("x", function(d) {return xScale(2016.5);})
+            .attr("y", function(d) {return yScale(d.value);})
+            .text(function(d) {return labelDict[d.label];})
+            .attr("dy", function(d) {
+                if (d.label === "windutility") {
+                    return 5;
+                } else if (d.label === "hydroelectricutility") {
+                    return -2;
+                } else {
+                    return 0;
+                }
+            })
+            .attr("fill", "#000000")
+            .attr("opacity", 1);
+
+    } else {
+
+        if (plot.selectAll(".lineLabel").empty()) {
+
+            // draw new line labels
+            plot.selectAll('.lineLabel')
+                .data(labelData.filter(function(d) {return d.label != "year";}))
+                .enter()
+                .append("text")
+                .attr("class", "lineLabel")
+                .attr("id", function(d) {return labelDict[d.label];})
+                .attr("x", function(d) {return xScale(2016.5);})
+                .attr("y", function(d) {return yScale(d.value);})
+                .text(function(d) {return labelDict[d.label];})
+                .attr("dy", function(d) {
+                    if (d.label === "windutility") {
+                        return 5;
+                    } else if (d.label === "hydroelectricutility") {
+                        return -2;
+                    } else {
+                        return 0;
+                    }
+                })
+                .attr("fill", "#000000")
+                .attr("opacity", 1);
+
+        } else {
+
+            // reset colors
+            plot.selectAll('.lineLabel')
+                .transition()
+                .duration(DURATION)
+                .attr("fill", "#000000");
+        }
+
+
+
+    }
 
     /*************************
     ***** TITLE, CAPTION *****

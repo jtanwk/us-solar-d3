@@ -53,8 +53,17 @@ function makePlot2(data, response) {
             })
             .transition()
             .delay(DURATION)
-            .attr("opacity", 0);
+            .attr("opacity", 0)
+            .remove();
 
+    } else {
+
+        // remove fitted line
+        svg.select(".regressionLine")
+            .transition()
+            .duration(0.5 * DURATION)
+            .attr("opacity", 0)
+            .remove();
     }
 
     /*************************
@@ -78,8 +87,7 @@ function makePlot2(data, response) {
 
     const yScale = d3.scaleLinear()
         .domain(d3.extent(data, (d, i) => i))
-        .range([plotHeight, margin.bottom])
-        .nice();
+        .range([plotHeight, margin.bottom]);
 
     /***************************************
     ***** X AXiS, AXIS LABEL, GRIDLINE *****
@@ -151,7 +159,7 @@ function makePlot2(data, response) {
             .enter()
             .append("circle")
             .attr("id", d => d.state)
-            .attr("cy", yScale(40.5))
+            .attr("cy", yScale(38.5))
             .attr("cx", xScale(30))
             .attr("r", 0)
             .attr("class", "points purple")
@@ -206,7 +214,7 @@ function makePlot2(data, response) {
                     return "pointLabel purple";
                 }
             })
-            .attr("y", yScale(40.5))
+            .attr("y", yScale(38.5))
             .attr("x", xScale(30))
             .text(d => d.state)
             .attr("text-anchor", "start")

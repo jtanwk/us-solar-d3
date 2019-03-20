@@ -27,6 +27,13 @@ function makePlot4(data, response) {
     ***** REMOVE OLD DATA *****
     **************************/
 
+    // remove fitted line
+    svg.select(".regressionLine")
+        .transition()
+        .duration(0.5 * DURATION)
+        .attr("opacity", 0)
+        .remove();
+
     /*************************
     ***** DATA WRANGLING *****
     *************************/
@@ -117,69 +124,121 @@ function makePlot4(data, response) {
         .duration(DURATION)
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // transition out points
-    plot.selectAll(".points")
-        .data(data, key)
-        .transition()
-        .duration(DURATION)
-        .attr("cx", d => xBandScale(d.state) + (0.5 * xBandScale.bandwidth()))
-        .attr("cy", d => {
-            if (d.panels_per_10k > 1) {
-                return yScale(d.panels_per_10k);
-            } else {
-                return yScale(d.panels_per_10k);
-            }
-        })
-        .transition()
-        .duration(0.5 * DURATION)
-        .attr("r", 0);
+    if (response.direction === "down") {
+        // transition out points
+        plot.selectAll(".points")
+            .data(data, key)
+            .transition()
+            .duration(DURATION)
+            .attr("cx", d => xBandScale(d.state) + (0.5 * xBandScale.bandwidth()))
+            .attr("cy", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(d.panels_per_10k);
+                } else {
+                    return yScale(d.panels_per_10k);
+                }
+            })
+            .transition()
+            .duration(0.5 * DURATION)
+            .attr("r", 0);
 
-    // transition in rects
-    plot.selectAll(".rects")
-        .data(data, key)
-        .enter()
-        .append("rect")
-        .attr("class", d => {
-            if (d.region == "Northeast") {
-                return "rects purple";
-            } else {
-                return "rects grey";
-            }
-        })
-        .attr("id", d => d.state)
-        .attr("x", d => xBandScale(d.state))
-        .attr("y", d => {
-            if (d.panels_per_10k > 1) {
-                return yScale(d.panels_per_10k);
-            } else {
-                return yScale(d.panels_per_10k);
-            }
-        })
-        .attr("width", xBandScale.bandwidth())
-        .attr("height", d => {
-            if (d.panels_per_10k > 1) {
-                return 0;
-            } else {
-                return 0;
-            }
-        })
-        .transition()
-        .delay(DURATION)
-        .duration(DURATION)
-        .attr("y", d => {
-            if (d.panels_per_10k > 1) {
-                return yScale(d.panels_per_10k);
-            } else {
-                return yScale(1);
-            }
-        })
-        .attr("height", d => {
-            if (d.panels_per_10k > 1) {
-                return yScale(1) - yScale(d.panels_per_10k);
-            } else {
-                return yScale(d.panels_per_10k) - yScale(1);
-            }
-        });
+        // transition in rects
+        plot.selectAll(".rects")
+            .data(data, key)
+            .enter()
+            .append("rect")
+            .attr("class", d => {
+                if (d.region == "Northeast") {
+                    return "rects purple";
+                } else {
+                    return "rects grey";
+                }
+            })
+            .attr("id", d => d.state)
+            .attr("x", d => xBandScale(d.state))
+            .attr("y", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(d.panels_per_10k);
+                } else {
+                    return yScale(d.panels_per_10k);
+                }
+            })
+            .attr("width", xBandScale.bandwidth())
+            .attr("height", d => {
+                if (d.panels_per_10k > 1) {
+                    return 0;
+                } else {
+                    return 0;
+                }
+            })
+            .transition()
+            .delay(DURATION)
+            .duration(DURATION)
+            .attr("y", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(d.panels_per_10k);
+                } else {
+                    return yScale(1);
+                }
+            })
+            .attr("height", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(1) - yScale(d.panels_per_10k);
+                } else {
+                    return yScale(d.panels_per_10k) - yScale(1);
+                }
+            });
+    } else {
+
+        plot.selectAll(".rects").remove();
+
+        // transition in bars only
+        plot.selectAll(".rects")
+            .data(data, key)
+            .enter()
+            .append("rect")
+            .attr("class", d => {
+                if (d.region == "Northeast") {
+                    return "rects purple";
+                } else {
+                    return "rects grey";
+                }
+            })
+            .attr("id", d => d.state)
+            .attr("x", d => xBandScale(d.state))
+            .attr("y", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(d.panels_per_10k);
+                } else {
+                    return yScale(d.panels_per_10k);
+                }
+            })
+            .attr("width", xBandScale.bandwidth())
+            .attr("height", d => {
+                if (d.panels_per_10k > 1) {
+                    return 0;
+                } else {
+                    return 0;
+                }
+            })
+            .transition()
+            .duration(DURATION)
+            .attr("y", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(d.panels_per_10k);
+                } else {
+                    return yScale(1);
+                }
+            })
+            .attr("height", d => {
+                if (d.panels_per_10k > 1) {
+                    return yScale(1) - yScale(d.panels_per_10k);
+                } else {
+                    return yScale(d.panels_per_10k) - yScale(1);
+                }
+            });
+    }
+
 
     /*********************
     ***** BAR LABELS *****

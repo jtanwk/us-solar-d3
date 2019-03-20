@@ -3,7 +3,7 @@ SHINING A LIGHT ON US HOUSEHOLD SOLAR ENERGY GENERATION
 JONATHAN TAN
 MASTER JS FILE
 
-AS OF MARCH 9, 2019
+AS OF MARCH 20, 2019
 
 LIBRARIES LOADED IN GLOBAL:
     - d3
@@ -13,14 +13,12 @@ LIBRARIES LOADED IN GLOBAL:
 
 /*
 TODO:
-
-Unresolved follow up items from OH 3/14:
-Why are the colors not what I expect them to be? - TRIAL AND ERROR
-
-- fix bugs in transition backwards from dotplot to lineplot
-- mouseover tooltips
-- insert links in data source
+- add annotations to dotplot
+- add legend to scatterplot
+- mouseover tooltips for map
+- fix colors for map
 - mouseover text highlights elements in chart
+- finish writing outro text
 */
 
 // scollama code heavily adapted from
@@ -82,10 +80,10 @@ function handleStepEnter(response) {
     // update svgs
     switch(response.index) {
         case 0:
-            makePlot1(data_1);
+            makePlot1(data_1, response);
             break;
         case 1:
-            updatePlot1(data_1);
+            updatePlot1(data_1, response);
             break;
         case 2:
             makePlot2(data_234, response);

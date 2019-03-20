@@ -141,6 +141,7 @@ function makePlot3(data, response) {
             .attr("cy", (d, i) => yScale(d.btu_per_10k))
             .attr("r", 3);
     } else {
+
         plot.selectAll(".rects").remove();
 
         plot.selectAll(".points")
@@ -186,6 +187,37 @@ function makePlot3(data, response) {
         .attr("y", (d, i) => yScale(d.btu_per_10k))
         .attr("dx", 7)
         .attr("dy", -7)
+        .attr("opacity", 1);
+
+
+    /**********************
+    ***** FITTED LINE *****
+    **********************/
+
+    // regression done in R: log(btu_per_10k) = -2.6330 + 0.3649(avg_sun)
+    // just need a straight line with x, y following this formula
+
+    // code for appending line adapted from
+    // https://stackoverflow.com/questions/25418333/how-to-draw-straight-line-in-d3-js-horizontally-and-vertically
+
+    const xMin = d3.extent(data, d => d.sun)[0];
+    const xMax = d3.extent(data, d => d.sun)[1];
+
+    function fitY(x) {
+        return Math.pow(10, (-2.633 + (0.3649 * x)));
+    };
+
+    plot.append("line")
+        .attr("class", "regressionLine")
+        .attr("x1", xScale(xMin))
+        .attr("y1", yScale(fitY(xMin)))
+        .attr("x2", xScale(xMax))
+        .attr("y2", yScale(fitY(xMax)))
+        .attr("stroke", "#000000")
+        .attr("stroke-dasharray", 4)
+        .attr("opacity", 0)
+        .transition()
+        .duration(DURATION)
         .attr("opacity", 1);
 
     /*************************
