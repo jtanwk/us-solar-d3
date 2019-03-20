@@ -166,6 +166,7 @@ p {
 #errMsg {
     font-family: "Asap SemiBold";
     font-size: 24px;
+    text-align: center;
 }
 
 /* Chart titles */
@@ -235,18 +236,19 @@ p {
 }
 
 /* Plot area gridlines */
-.grid line {
+.xGrid line,
+.yGrid line {
     stroke: #DDDDDD;
     stroke-opacity: 0.5;
 }
 
 /* Outer paths */
-.grid path {
+.xGrid path,
+.yGrid path {
     stroke-width: 0;
 }
 
 /* Map formatting */
-
 .map path {
     fill: #FFFFFF;
     stroke: #DDDDDD;

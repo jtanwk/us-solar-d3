@@ -17,12 +17,10 @@ TODO:
 Unresolved follow up items from OH 3/14:
 Why are the colors not what I expect them to be? - TRIAL AND ERROR
 
-If you scroll from start to barchart (#4) and then back one,
-the bars don't go away and I get this error:
-"Uncaught DOMException: Failed to execute 'insertBefore' on 'Node'""
-
+- fix bugs in transition backwards from dotplot to lineplot
 - mouseover tooltips
 - insert links in data source
+- mouseover text highlights elements in chart
 */
 
 // scollama code heavily adapted from
@@ -162,40 +160,14 @@ function scroll_init() {
 	window.addEventListener('resize', handleResize);
 }
 
-// setup SVG canvas once; scroll triggers just update this
-function svg_init() {
-    // dynamic dimension sizing code adapted from
-    // https://github.com/d3/d3-selection/issues/128
-    const bbox = d3.select("#chart").node().getBoundingClientRect()
-
-    const width = bbox.width;
-    const height = bbox.height;
-    const margin = {top: 100, left: 50, right: 50, bottom: 50};
-
-    const plotWidth = width - margin.left - margin.right;
-    const plotHeight = height - margin.bottom - margin.top;
-
-    d3.select("#chart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    d3.select("#mapPlot")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-}
-
 // LOAD DATA
 Promise.all([
     d3.json("data/processed-data/gen-by-year.json"),
     d3.json("data/processed-data/gen-ghi-panels-2016.json"),
     d3.json("data/processed-data/map-data.topojson")
-        // .then(d => )
 ]).then(results => {
+
     // assign separate references for each dataset
-    // if using globals are bad I don't yet know a way around this
     this.data_1 = results[0];
     this.data_234 = results[1];
 
@@ -207,7 +179,7 @@ Promise.all([
 
     // Go!
     scroll_init();  // initialize scrollama
-    svg_init(); // initialize svg window
+    svg_init(); // initialize svg divs, g containers common to all plots
     makePlot5(data_5); // pre-draw map with invisible circles
 
 }).catch(error => {

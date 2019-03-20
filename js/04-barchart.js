@@ -27,11 +27,6 @@ function makePlot4(data, response) {
     ***** REMOVE OLD DATA *****
     **************************/
 
-    // potentially find smoother transitions for some of these
-    d3.select("#header").remove();
-    d3.select("#footer").remove();
-    d3.select(".xLabel").remove();
-
     /*************************
     ***** DATA WRANGLING *****
     *************************/
@@ -56,35 +51,38 @@ function makePlot4(data, response) {
 
     const yScale = d3.scaleLog()
         .domain(d3.extent(data, d => d.panels_per_10k))
-        .range([plotHeight, margin.bottom])
-        .nice();
+        .range([plotHeight, margin.bottom]);
 
     /***************************************
     ***** Y AXiS, AXIS LABEL, GRIDLINE *****
     ***************************************/
 
     // update y axis
-    const yaxis = svg.select(".yAxis")
+    svg.select(".yAxis")
         .transition()
         .duration(DURATION)
         .attr("transform", `translate(${margin.left}, ${margin.bottom})`)
         .call(d3.axisLeft(yScale)
-            .ticks(5)
+            .ticks(4)
             .tickFormat(d3.format("0.1r"))
     );
 
     // y axis gridlines
-    svg.select(".yAxis")
-        .select(".grid")
+    svg.select(".yGrid")
         .transition()
         .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(4)
             .tickSize(-(plotWidth + margin.right))
-            .tickFormat(""));
+            .tickFormat("")
+        );
+
+    /***************************************
+    ***** X AXiS, AXIS LABEL, GRIDLINE *****
+    ***************************************/
 
     // x axis
-    const xaxis = svg.select(".xAxis")
+    svg.select(".xAxis")
         .transition()
         .duration(DURATION)
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
@@ -92,6 +90,21 @@ function makePlot4(data, response) {
             .tickValues([])
         );
 
+    // x axis gridline
+    svg.select(".xGrid")
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
+        .call(d3.axisBottom(xBandScale)
+            .tickValues([])
+        );
+
+    // x axis label
+    svg.selectAll(".xLabel")
+        .data([{"label": ""}])
+        .transition()
+        .duration(DURATION)
+        .text(d => d.label);
 
     /***************
     ***** BARS *****
@@ -234,32 +247,28 @@ function makePlot4(data, response) {
     *************************/
 
     // Create header grouping
-    const header = svg.append("g")
-        .attr("id", "header");
+    const header = svg.select("#header");
 
     // chart title
     header.selectAll(".chartTitle")
         .data([{"label": "Solar panels per capita (as of 2016)"}])
-        .enter()
-        .append("text")
+        .transition()
+        .duration(DURATION)
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
         .attr("y", margin.top - 10)
-        .attr("text-anchor", "start")
-        .attr("class", "chartTitle")
+        .attr("text-anchor", "start");
 
     // Create footer grouping
-    const footer = svg.append("g")
-        .attr("id", "footer");
+    const footer = svg.select("#footer");
 
     // Caption with data source
     footer.selectAll(".captionText")
         .data([{"label": "Data source: NREL (U.S. Dept of Energy), National Cancer Institute"}])
-        .enter()
-        .append("text")
+        .transition()
+        .duration(DURATION)
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
         .attr("y", height - 15)
-        .attr("text-anchor", "start")
-        .attr("class", "captionText")
+        .attr("text-anchor", "start");
 }

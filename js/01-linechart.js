@@ -19,12 +19,6 @@ function makePlot1(data) {
 
     const DURATION = 1000;
 
-    /**************************
-    ***** REMOVE OLD DATA *****
-    **************************/
-
-    var g = svg.selectAll("*").remove()
-
     /*************************
     ***** DATA WRANGLING *****
     *************************/
@@ -53,7 +47,7 @@ function makePlot1(data) {
         yObjs[series].name = series; // e.g. "Solar, Residential"
         // call getYFn function; takes string and returns array of values
         yObjs[series].yFunct = getYFn(yObjs[series].column);
-        // push appends arg to the list and returns new length
+        // push inserts arg to the list and returns new length
         yFuncts.push(yObjs[series].yFunct);
     }
 
@@ -69,30 +63,40 @@ function makePlot1(data) {
         .domain([0, d3.max(yFuncts.map(max))])
         .range([plotHeight, 0])
 
-    // separate y scale for better ticks
-    const yAxisScale = d3.scaleLog()
-        .domain([0, d3.max(yFuncts.map(max))])
-        .range([plotHeight, 0])
+    /***************************************
+    ***** X AXiS, AXIS LABEL, GRIDLINE *****
+    ***************************************/
 
-    /*********************
-    ***** X & Y AXES *****
-    *********************/
-
-    const xAxis = svg.append("g")
-        .attr("class", "xAxis")
+    svg.select(".xAxis")
         .attr("transform", `translate(${margin.left}, ${plotHeight + margin.top})`)
-        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(xScale)
+            .tickFormat(d3.format("d"))
+        );
 
-    const yAxis = svg.append("g")
-        .attr("class", "yAxis")
+    svg.select(".xGrid")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+        .call(d3.axisLeft(xScale)
+            .tickValues([])
+        );
+
+    svg.selectAll(".xLabel")
+        .data([{"label": "Solar Energy per capita Generated (BTUs)"}])
+        .transition()
+        .duration(DURATION)
+        .text(d => d.label);
+
+    /***************************************
+    ***** Y AXiS, AXIS LABEL, GRIDLINE *****
+    ***************************************/
+
+    svg.select(".yAxis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale)
             .tickValues([10, 100, 1000, 10000, 100000])
         );
 
-    svg.select(".yAxis")
-        .append("g")
-        .attr("class", "grid")
+    svg.select(".yGrid")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .call(d3.axisLeft(yScale)
             .ticks(5)
             .tickSize(-(plotWidth - margin.right - margin.left))
@@ -114,8 +118,7 @@ function makePlot1(data) {
     }
 
     // Append g to hold lines
-    const plot = svg.append("g")
-        .attr("id", "plot")
+    const plot = svg.select("#plot")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // Plot lines
@@ -209,8 +212,7 @@ function makePlot1(data) {
     *************************/
 
     // Create header grouping
-    const header = svg.append("g")
-        .attr("id", "header");
+    const header = svg.select("#header");
 
     // chart title
     header.selectAll(".chartTitle")
@@ -224,8 +226,7 @@ function makePlot1(data) {
         .attr("class", "chartTitle")
 
     // Create footer grouping
-    const footer = svg.append("g")
-        .attr("id", "footer");
+    const footer = svg.select("#footer");
 
     // Caption with data source
     footer.selectAll(".captionText")

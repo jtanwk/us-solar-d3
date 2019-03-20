@@ -23,7 +23,6 @@ function updatePlot1(data) {
     ***** REMOVE OLD DATA *****
     **************************/
 
-    // var g = svg.selectAll("*").remove()
 
     /*************************
     ***** DATA WRANGLING *****
@@ -50,7 +49,7 @@ function updatePlot1(data) {
     plot.selectAll("path")
         .merge(plot)
         .transition()
-        .duration(DURATION)
+        .duration(0.5 * DURATION)
         .attr("stroke", function(d) {
             const id = this.getAttribute('id');
             if (solarLabels.includes(id)) {
@@ -68,7 +67,7 @@ function updatePlot1(data) {
 
     plot.selectAll(".lineLabel")
         .transition()
-        .duration(DURATION)
+        .duration(0.5 * DURATION)
         .attr("fill", function(d) {
             const id = this.getAttribute('id');
             if (solarLabels.includes(id)) {

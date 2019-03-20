@@ -28,15 +28,10 @@ function makePlot3(data, response) {
     ***** REMOVE OLD DATA *****
     **************************/
 
-    // var g = svg.selectAll("*").remove()
-    d3.select("#header").remove();
-    d3.select("#footer").remove();
 
     /*************************
     ***** DATA WRANGLING *****
     *************************/
-
-    // placeholder for later work
 
     /***********************
     ***** X & Y SCALES *****
@@ -57,11 +52,21 @@ function makePlot3(data, response) {
     ***************************************/
 
     // update x axis
-    const xaxis = svg.select(".xAxis")
+    svg.select(".xAxis")
         .transition()
         .duration(DURATION)
         .call(d3.axisBottom(xScale)
             .ticks(5)
+        );
+
+    // x axis gridlines
+    svg.select(".xGrid")
+        .transition()
+        .duration(DURATION)
+        .call(d3.axisBottom(xScale)
+            .ticks(5)
+            .tickSize(-plotHeight)
+            .tickFormat("")
         );
 
     // x axis label
@@ -79,8 +84,8 @@ function makePlot3(data, response) {
     } else {
         svg.selectAll(".xLabel")
             .data([{"label": "Annual Average Global Horizontal Irradiance (kWh/m^2/day)"}])
-            .enter()
-            .append("text")
+            .transition()
+            .duration(DURATION)
             .attr("class", "xLabel")
             .attr("transform", `translate(0, ${plotHeight + margin.bottom + 10})`)
             .text(d => d.label)
@@ -94,7 +99,7 @@ function makePlot3(data, response) {
     ***************************************/
 
     // update y axis
-    const yaxis = svg.select(".yAxis")
+    svg.select(".yAxis")
         .transition()
         .duration(DURATION)
         .call(d3.axisLeft(yScale)
@@ -103,13 +108,14 @@ function makePlot3(data, response) {
     );
 
     // y axis gridlines
-    svg.select(".yAxis")
-        .append("g")
-        .attr("class", "grid")
+    svg.select(".yGrid")
+        .transition()
+        .duration(DURATION)
         .call(d3.axisLeft(yScale)
             .ticks(4)
             .tickSize(-plotWidth)
-            .tickFormat(""));
+            .tickFormat("")
+        );
 
     /*****************
     ***** POINTS *****
@@ -162,7 +168,7 @@ function makePlot3(data, response) {
 
     if (response.direction === "up") {
         plot.selectAll(".barLabels").remove();
-    }
+    };
 
     plot.selectAll(".pointLabel")
         .data(data, key)
@@ -180,39 +186,35 @@ function makePlot3(data, response) {
         .attr("y", (d, i) => yScale(d.btu_per_10k))
         .attr("dx", 7)
         .attr("dy", -7)
-        .attr("opacity", 1)
+        .attr("opacity", 1);
 
     /*************************
     ***** TITLE, CAPTION *****
     *************************/
 
     // Create header grouping
-    const header = svg.append("g")
-        .attr("id", "header");
+    const header = svg.select("#header");
 
     // chart title
     header.selectAll(".chartTitle")
         .data([{"label": "Solar energy generated per capita in 2016 (BTUs)"}])
-        .enter()
-        .append("text")
+        .transition()
+        .duration(DURATION)
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
         .attr("y", margin.top - 10)
-        .attr("text-anchor", "start")
-        .attr("class", "chartTitle")
+        .attr("text-anchor", "start");
 
     // Create footer grouping
-    const footer = svg.append("g")
-        .attr("id", "footer");
+    const footer = svg.select("#footer");
 
     // Caption with data source
     footer.selectAll(".captionText")
         .data([{"label": "Data source: SEDS (US Energy Information Administration)"}])
-        .enter()
-        .append("text")
+        .transition()
+        .duration(DURATION)
         .text(function(d) {return d.label;})
         .attr("x", margin.left)
         .attr("y", height - 15)
-        .attr("text-anchor", "start")
-        .attr("class", "captionText")
+        .attr("text-anchor", "start");
 }
