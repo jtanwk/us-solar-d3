@@ -104,12 +104,12 @@ function handleStepEnter(response) {
 
 function toggleChart(response) {
 
-    // toggle z-index
-    var dataStep = Number(response.element.dataset.step);
+
     chart.classed('is-active', false);
 
     // if moving down to step 5, switch divs
-    if (response.index === 5 && response.direction === "down") {
+    if (response.index === 5) {
+        // toggle z-index
         chart.classed('is-active', function(d, i) {
             return i === 1;
         });
