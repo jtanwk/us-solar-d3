@@ -3,19 +3,27 @@ SHINING A LIGHT ON US HOUSEHOLD SOLAR ENERGY GENERATION
 JONATHAN TAN
 MASTER JS FILE
 
-AS OF MARCH 20, 2019
+AS OF MARCH 21, 2019
 
 LIBRARIES LOADED IN GLOBAL:
     - d3
     - scrollama
     - intersection-observer
+    - stickyfill
+    - topojson@3
+    - d3-legend
 */
 
 /*
 TODO:
-- add annotations to dotplot
-- mouseover text highlights elements in chart
+x add annotations to dotplot
 - finish writing outro text
+
+STRETCH:
+- mousover chart elements shows detailed tooltip
+- mouseover text highlights elements in chart, surfaces detailed annotations
+- get dynamic resize working
+- mobile compatibility
 */
 
 // scollama code heavily adapted from

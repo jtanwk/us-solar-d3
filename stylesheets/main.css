@@ -205,7 +205,6 @@ p {
 .lineLabel {
     font-family: "Asap";
     font-size: 10px;
-    /* color: #000000; */
 }
 
 /* Dot plot labels */
@@ -227,6 +226,13 @@ p {
     font-family: "Asap";
     font-size: 12px;
     color: #000000;
+}
+
+/* On-chart annotation text */
+.annotationText {
+    font-family: "Asap";
+    font-size: 10px;
+    fill: #BBBBBB;
 }
 
 /*************************
@@ -265,7 +271,6 @@ p {
 }
 
 /* Map - tooltip box */
-
 div.tooltip {
     position: absolute;
     text-align: center;
@@ -281,4 +286,16 @@ div.tooltip {
 
     border: 2px;
     pointer-events: none;
+}
+
+/* dotplot annotation line */
+.dividingLine {
+    stroke: #BBBBBB;
+    stroke-dasharray: 10;
+}
+
+/* scatterplot regression line */
+.regressionLine {
+    stroke: #000000;
+    stroke-dasharray: 10;
 }

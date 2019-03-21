@@ -33,6 +33,11 @@ function makePlot3(data, response) {
     ***** REMOVE OLD DATA *****
     **************************/
 
+    d3.select(".annotationBox")
+        .transition()
+        .duration(0.5 * DURATION)
+        .attr("opacity", 0)
+        .remove();
 
     /*************************
     ***** DATA WRANGLING *****
