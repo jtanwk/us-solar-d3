@@ -28,11 +28,14 @@ function updatePlot1(data, response) {
     ***** REMOVE OLD DATA *****
     **************************/
 
-    d3.select(".annotationBox")
-        .transition()
-        .duration(0.5 * DURATION)
-        .attr("opacity", 0)
-        .remove();
+    if (response.direction === "up") {
+        // remove annotation layer from dotplot
+        d3.select(".annotationBox")
+            .transition()
+            .duration(0.5 * DURATION)
+            .attr("opacity", 0)
+            .remove();
+    };
 
     /*************************
     ***** DATA WRANGLING *****

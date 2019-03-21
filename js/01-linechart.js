@@ -80,7 +80,7 @@ function makePlot1(data, response) {
         );
 
     svg.selectAll(".xLabel")
-        .data([{"label": "Solar Energy per capita Generated (BTUs)"}])
+        .data([{"label": "Year"}])
         .transition()
         .duration(DURATION)
         .text(d => d.label);

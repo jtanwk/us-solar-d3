@@ -15,10 +15,6 @@ LIBRARIES LOADED IN GLOBAL:
 */
 
 /*
-TODO:
-x add annotations to dotplot
-- finish writing outro text
-
 STRETCH:
 - mousover chart elements shows detailed tooltip
 - mouseover text highlights elements in chart, surfaces detailed annotations

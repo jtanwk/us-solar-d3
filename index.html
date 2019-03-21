@@ -7,10 +7,12 @@
     </head>
     <body>
         <section id="intro">
-            <h1>Introduction</h1>
+            <h1>Shining a Light on Household Solar Energy Generation</h1>
+            <p><i>An visual exploration of residential solar panel adoption in the US.<br /> Jonathan Tan, 2019</i><p>
+            <h2>Introduction</h2>
             <p>Investment in renewable energy is such a fascinating policy area. It’s one of the few that feature the interplay of energy as a national utility, yet with semi-reliance on individuals and corporations as contributors to industry supply - e.g. in installing solar panels or, at a greater scale, solar farms.</p>
-            <p>Much of the national conversation around renewable energy today tends to revolve around switching from gasoline power to low-emission alternatives (say, a regular petrol car vs. a Tesla, or a city transit system switching to electric buses). In many cases, this makes sense - the Department of Energy states that “electricity is less expensive than gasoline and [electric vehicles] are more efficient than gasoline vehicles”.</p>
-            <p>More efficient or not, however, this still shifts the energy load from gasoline to the electrical grid, which itself is mostly generated from non-renewable sources. The generation of energy from renewable sources is a critical part of reducing emissions in a world of accelerating energy consumption. The question I’m more preoccupied with is: where is all this energy coming from?</p>
+            <p>Much of the national conversation around renewable energy today tends to revolve around switching to low-emission fuel alternatives (say, a regular petrol car vs. a Tesla, or a city transit system switching to electric buses). In many cases, this makes sense - the Department of Energy states that <a href="https://www.energy.gov/eere/electricvehicles/saving-fuel-and-vehicle-costs">“electricity is less expensive than gasoline and [electric vehicles] are more efficient than gasoline vehicles”</a>.</p>
+            <p>More efficient or not, however, all this does is shift emissions from local consumption (e.g. in your car) to the electrical grid, which itself is mostly generated from non-renewable sources. The <i>generation</i> of energy from renewable sources is a critical part of reducing emissions in a world of accelerating energy consumption. In other words, the question I’m more preoccupied with is: where is all this energy coming from?</p>
             <p id="scrollMsg">
                 <br />
                 SCROLL TO CONTINUE<br />
@@ -46,32 +48,65 @@
                 </div>
                 <div class='step' data-step='2'>
                     <h2><font color="#5D2BF0">Northeast states</font> generate more solar energy from less sunlight.</h2>
-                    <p>Relative to states in the North Central, South, and West regions, states in the <font color="#5D2BF0">Northeast</font> generated more solar energy in 2016 than what their solar irradiance levels might suggest.</p>
+                    <p>Relative to states in the <font color="#BBBBBB">North Central, South, and West</font> regions, states in the <font color="#5D2BF0">Northeast</font> generated more solar energy in 2016 than what their solar irradiance levels might suggest.</p>
+                    <p><i>(Global Horizontal Irradiance measures the amount of solar radiation each state receives on average in a year, adjusted for land area and other factors.)</i></p>
                     <p>In particular, there seems to be a lot of unexplained variation towards the lower end of the irradiance range. <font color="#5D2BF0">Vermont</font>, <font color="#5D2BF0">Massachussetts</font>, and <font color="#5D2BF0">New Jersey</font> in particular are generating way more solar energy than neighboring states that get just as much sunlight, if not more.</p>
                     <p>While there are plenty of factors that impact the efficiency with which you generate solar energy, my immediate guess is that the most straightforward way to ramp up your output is to have more solar panels.</p>
-                    <p>So - which states have the most solar panels?</p>
+                    <p>So: which states have the most solar panels?</p>
                 </div>
                 <div class='step' data-step='3'>
-                    <h2><font color="#5D2BF0">Northeast states</font> are surprisingly well-represented in solar panels per capita.</h2>
+                    <h2><font color="#5D2BF0">Northeast states</font> are also surprisingly well-represented in solar panels per capita.</h2>
                     <p>States like <font color="#5D2BF0">Massachussetts</font>, <font color="#5D2BF0">New Jersey</font>, and <font color="#5D2BF0">Connecticut</font> are among states with the most solar panels per capita in 2016.</p>
+                    <p>There are many reasons why this might vary by state: different solar panel prices, the availability of tax incentives for solar panel owners, the median income, other political factors, etc. I explore a few of these in <a href="https://jtanwk.github.io/us-solar/">the static version of this exploration</a>.</p>
                 </div>
                 <div class='step' data-step='4'>
-                    <h2>Large panels-per-capita in the Northeast, despite low annual solar radiation.</h2>
-                    <p>While the Northeast region receives the least solar irradiance in the continental United States, it also has counties with disproportionately high solar panel installation rates.</p>
+                    <h2>Plotting per-capita solar panel installations vs. how much solar radiation each county receives:</h2>
+                    <p>Sure enough, while the Northeast region receives the least solar irradiance in the continental United States, it also has disproportionately high solar panel installation rates - even when looking at this on a county level.</p>
+                    <p><i>Mousover each circle to see how many solar panels per 10,000 residents each county has.</i></p>
                 </div>
             </div>
         </section>
         <section id="outro">
-            <h1>NEXT STEPS</h1>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
-            <p>NEW LINE</p>
+            <h2>Credits</h2>
+            <h3>People</h3>
+            <p>
+                Many thanks to Alex Engler and Andrew McNutt for their tireless help with code and design throughout this project.<br />
+                Many thanks <i>also</i> to my peers in the <a href="http://capp.uchicago.edu">UChicago CAPP program</a> - too many to list individually - who have provided useful feedback and user testing.
+            </p>
+            <h3>Data Sources</h3>
+            <p>
+                Solar energy generation: <a href="https://www.eia.gov/state/seds/">State Energy Data Systems (SEDS), U.S. Energy Information Administration</a><br />
+                Solar irradiance: <a href="https://www.nrel.gov/gis/data-solar.html">National Renewable Energy Laboratory, U.S. Department of Energy</a><br />
+                Solar panel installations: <a href="https://openpv.nrel.gov/">OpenPV Project, NREL, U.S. Department of Energy</a><br />
+                Population estimates: <a href="https://seer.cancer.gov/popdata/download.html">Surveillance, Epidemiology and End Results (SEER) Program, National Cancer Institute</a><br />
+                State tax policies: <a href="http://www.dsireusa.org/resources/data-and-tools/">Database of State Incentives for Renewables & Efficiency (DSIRE), North Carolina State University</a><br />
+                U.S. county-level shapefiles: <a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html">U.S. Census Bureau</a>
+            </p>
+            <h3>Code Sources<h3>
+            <p>
+                This project would not have been possible without the multitude of resources available online for learning and implementing D3, including:<br /><br />
+                <a href="https://d3js.org/">D3 v5</a> by Mike Bostock.<br />
+                <a href="https://alignedleft.com/work/d3-book"><i>Interactive Data Visualization for the Web (2nd Ed.)</i></a> by Scott Murray.<br />
+                <a href="https://github.com/russellgoldenberg/scrollama">Scrollama</a> by Russell Goldenberg.<br />
+                <a href="https://pudding.cool/process/introducing-scrollama/">Extensive implementation details for Scrollama</a> by The Pudding.<br />
+                <a href="http://wd.dizaina.net/en/scripts/stickyfill/">Stickyfill</a> by Oleg Korsunsky.<br />
+                <a href="https://github.com/topojson/topojson">TopoJSON library</a> by Mike Bostock.<br />
+                <a href="https://d3-legend.susielu.com/">D3-legend</a> by Susie Lu.<br />
+                Code for dynamic sizing adapted from <a href="https://github.com/d3/d3-selection/issues/128">this Github issue</a>.<br >
+                Code for multi-line charts adapted from <a href="http://bl.ocks.org/asielen/44ffca2877d0132572cb">this block</a>.<br />
+                Code for wipe-in transitions adapted from <a href="https://github.com/mdvandergon/monetary-policy">Mark Vandergon</a>.<br />
+                Code for appending annotation lines adapted from <a href="https://stackoverflow.com/questions/25418333/how-to-draw-straight-line-in-d3-js-horizontally-and-vertically">this StackOverflow thread</a>.<br />
+                Code for wrangling GeoJSON adapted from <a href="https://stackoverflow.com/questions/26232942/get-max-and-min-value-from-a-geojson">this StackOverflow thread</a>.<br />
+                Code for the map's color scale adapted from <a href="http://bl.ocks.org/jfreyre/b1882159636cc9e1283a">this block</a>.<br />
+                Code for calculating centroids from GeoJSON adapted from <a href="https://bl.ocks.org/curran/55d327542393530662c3">this block</a>.<br />
+                Code for working with TopoJSON adapted from <a href="https://bl.ocks.org/almccon/410b4eb5cad61402c354afba67a878b8">this block</a>.<br />
+                Code for mouseover tooltips adapted from <a href="http://bl.ocks.org/d3noob/a22c42db65eb00d4e369">this block</a>.<br />
+            </p>
+            <h3>Project Code</h3>
+            <p>
+                All code for this project is hosted on <a href="https://github.com/jtanwk/us-solar-d3">Github</a>.<br />
+                The more extensive static report that formed the basis for this project, including detailed data assembly scripts in R, can be found <a href="https://jtanwk.github.io/us-solar/">here</a>.<br />
+            </p>
         </section>
         <!-- D3 v5.9.1 downloaded on Feb 20, 2019 from https://d3js.org/ -->
         <script type="text/javascript" src="js/lib/d3.min.js"></script>

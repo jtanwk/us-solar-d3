@@ -138,10 +138,23 @@ https://pudding.cool/process/introducing-scrollama/ */
 ***** TEXT *****
 ***************/
 
-/* Titles */
-h1,
+/* Page title */
+h1 {
+    font-family: "Asap SemiBold";
+    font-size: 36px;
+    font-family: sans-serif;
+}
+
+/* Section titles */
 h2 {
+    font-family: "Asap SemiBold";
     font-size: 24px;
+    font-family: sans-serif;
+}
+
+h3 {
+    font-family: "Asap SemiBold";
+    font-size: 16px;
     font-family: sans-serif;
 }
 
@@ -151,8 +164,9 @@ p {
     font-size: 16px;
 }
 
-/* Scroll message */
+/* SCROLL TO CONTINUE message */
 #scrollMsg {
+    font-family: "Asap";
     font-size: 24px;
     text-align: center;
     color: #DDDDDD;
