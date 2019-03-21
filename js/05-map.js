@@ -100,10 +100,12 @@ function makePlot5(data) {
         return path.centroid(d);
     }
 
-    function getSize(d) {
-        return d.properties.panels_per_10k;
-    }
-
+    // Define div container for mouseover tooltips
+    // Adapted from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+    var div = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .attr("opacity", 0);
 
     plot.selectAll(".centroid")
         .data(data.features)
@@ -111,7 +113,7 @@ function makePlot5(data) {
         .append("circle")
         .filter(function(d) {return !isNaN(getCentroid(d)[0]);})
         .attr("class", "centroid")
-        .attr("id", d => d.properties.geoid)
+        .attr("id", d => d.properties.GEOID)
         .attr("cx", d => getCentroid(d)[0])
         .attr("cy", d => getCentroid(d)[1])
         .attr("r", d => areaScale(d.properties.panels_per_10k))
@@ -125,7 +127,29 @@ function makePlot5(data) {
                 return "#DDDDDD";
             }
         })
-        .attr("stroke", "#000000");
+        .on("mouseenter", function(d) {
+
+            // highlight circle
+            d3.select(this).attr("class", "centroid selectedPoint");
+
+            // make tooltip visible
+            div.attr("opacity", 0.9)
+                .html(`${d.properties.county_name}, ${d.properties.postal}
+                    <br /> ${Math.floor(d.properties.panels_per_10k)}
+                    solar panels <br /> per 10,000 residents`)
+                .style("left", `${d3.event.pageX+20}px`)
+                .style("top", `${d3.event.pageY-50}px`);
+
+        })
+        .on("mouseleave", function(d) {
+
+            // un-highlight circle
+            d3.select(this).attr("class", "centroid");
+
+            // hide tooltip
+            div.attr("opacity", 0);
+
+        });
 
 
     /*************************

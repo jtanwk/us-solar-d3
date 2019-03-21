@@ -254,3 +254,27 @@ p {
     stroke: #DDDDDD;
     stroke-width: 1px;
 }
+
+/* Map - selected points */
+.selectedPoint {
+    stroke: #000000;
+}
+
+/* Map - tooltip box */
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    dominant-baseline: central;
+
+    /* width: 16px; */
+    /* height: 16px; */
+    padding: 5px;
+
+    font-family: "Asap";
+    font-size: 12px;
+    background: #FFFFFF;
+
+    border: 2px;
+    pointer-events: none;
+}

@@ -15,7 +15,6 @@ LIBRARIES LOADED IN GLOBAL:
 TODO:
 - add annotations to dotplot
 - add legend to scatterplot
-- mouseover tooltips for map
 - fix colors for map
 - mouseover text highlights elements in chart
 - finish writing outro text
