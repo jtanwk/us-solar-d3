@@ -53,10 +53,6 @@ body {
     min-height: 1200px;
 }
 
-svg {
-    /* border: 2px solid red; */
-}
-
 #intro,
 #outro {
     padding: 0px 200px 0px 200px;
@@ -129,8 +125,8 @@ https://pudding.cool/process/introducing-scrollama/ */
     opacity: 0.2;
     padding: 1rem;
 
-    /* transform: translate(0, -500px); */
-    /* border: 1px solid red; */
+    /* transform: translate(0, -500px);
+    border: 1px solid red; */
 }
 
 .step.is-active {
@@ -220,6 +216,14 @@ p {
 
 /* Bar chart labels */
 .barLabels {
+    font-family: "Asap";
+    font-size: 12px;
+    color: #000000;
+}
+
+/* Legend */
+.sizeLegend,
+.colorLegend {
     font-family: "Asap";
     font-size: 12px;
     color: #000000;

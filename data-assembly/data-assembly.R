@@ -110,15 +110,14 @@ county_map %>%
             by = c("zip" = "zipcode")) %>%
   left_join(counties %>%
               mutate(geoid = paste0(state_fips, county_fips)) %>%
-              select(geoid, population),
+              select(geoid, population, county_name),
             by = c("GEOID" = "geoid")) %>%
   group_by(GEOID) %>%
   mutate(total_n = sum(n, na.rm = TRUE)) %>%
   mutate(panels_per_10k = 10000 * (total_n / population)) %>%
   mutate(panels_per_10k = ifelse(is.na(panels_per_10k), 0, panels_per_10k)) %>%
-  select(GEOID, avg, panels_per_10k, geometry) %>%
+  select(GEOID, county_name, postal, avg, panels_per_10k, geometry) %>%
   unique() %>%
-  # mutate(cent = st_centroid(geometry)) %>%
   rename(sun = avg) %>%
   arrange(desc(panels_per_10k)) %>% 
   ms_simplify() %>%

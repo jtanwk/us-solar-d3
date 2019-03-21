@@ -34,6 +34,12 @@ function makePlot4(data, response) {
         .attr("opacity", 0)
         .remove();
 
+    // remove color legend
+    svg.select(".colorLegend")
+        .transition()
+        .duration(DURATION)
+        .attr("transform", `translate(${0.85 * plotWidth}, ${1.5 * margin.top})`);
+
     /*************************
     ***** DATA WRANGLING *****
     *************************/

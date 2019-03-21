@@ -19,6 +19,11 @@ function updatePlot1(data, response) {
 
     const DURATION = 1000;
 
+    // define colors
+    const THEME_PURPLE = "#5D2BF0";
+    const THEME_ORANGE = "#FF810F";
+    const THEME_GREY = "#DDDDDD";
+
     /**************************
     ***** REMOVE OLD DATA *****
     **************************/
@@ -41,12 +46,6 @@ function updatePlot1(data, response) {
         "Solar, Commercial",
         "Solar, Industrial"
     ];
-
-    // define colors
-    const THEME_PURPLE = "#5D2BF0";
-    const THEME_ORANGE = "#FF810F";
-    const THEME_GREY = "#DDDDDD";
-
 
     if (response.direction === "down") {
 

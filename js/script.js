@@ -14,8 +14,6 @@ LIBRARIES LOADED IN GLOBAL:
 /*
 TODO:
 - add annotations to dotplot
-- add legend to scatterplot
-- fix colors for map
 - mouseover text highlights elements in chart
 - finish writing outro text
 */
@@ -37,7 +35,7 @@ var scroller = scrollama();
 function handleResize() {
 
 	// 1. update height of step elements for breathing room between steps
-	var stepHeight = Math.floor(window.innerHeight * 0.75);
+	var stepHeight = Math.floor(window.innerHeight * 0.9);
 	step.style('height', stepHeight + 'px');
 
 	// 2. update height of graphic element
@@ -148,7 +146,7 @@ function scroll_init() {
 			graphic: '.scroll__graphic', // the graphic
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
-			offset: 0.67, // set the trigger to be 2/3 way down screen
+			offset: 0.5, // set the trigger to be 2/3 way down screen
 			debug: false, // display the trigger offset for testing
 		})
 		.onStepEnter(handleStepEnter);

@@ -32,6 +32,24 @@ function enterPlot5(data) {
     plot.selectAll(".centroid")
         .transition()
         .duration(DURATION)
-        .attr("opacity", 0.7);
+        .attr("opacity", 0.65);
+
+    /************************
+    ***** COLOR LEGEND  *****
+    ************************/
+
+    svg.select(".colorLegend")
+        .transition()
+        .duration(DURATION)
+        .attr("opacity", 1);
+
+    /***********************
+    ***** SIZE LEGEND  *****
+    ***********************/
+
+    svg.select(".sizeLegend")
+        .transition()
+        .duration(DURATION)
+        .attr("opacity", 1);
 
 }

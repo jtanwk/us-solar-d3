@@ -19,6 +19,11 @@ function makePlot3(data, response) {
 
     const DURATION = 1000;
 
+    // define colors
+    const THEME_PURPLE = "#5D2BF0";
+    const THEME_ORANGE = "#FF810F";
+    const THEME_GREY = "#DDDDDD";
+
     var key = function(d) {
         return d.state;
     }
@@ -44,8 +49,7 @@ function makePlot3(data, response) {
 
     const yScale = d3.scaleLog()
         .domain(d3.extent(data, d => d.btu_per_10k))
-        .range([plotHeight, margin.bottom])
-        .nice();
+        .range([plotHeight, margin.bottom]);
 
     /***************************************
     ***** X AXiS, AXIS LABEL, GRIDLINE *****
@@ -103,7 +107,7 @@ function makePlot3(data, response) {
         .transition()
         .duration(DURATION)
         .call(d3.axisLeft(yScale)
-            .ticks(4)
+            .tickValues([0.001, 0.01, 0.1, 1])
             .tickFormat(d3.format("0.1r"))
     );
 
@@ -112,7 +116,7 @@ function makePlot3(data, response) {
         .transition()
         .duration(DURATION)
         .call(d3.axisLeft(yScale)
-            .ticks(4)
+            .tickValues([0.001, 0.01, 0.1, 1])
             .tickSize(-plotWidth)
             .tickFormat("")
         );
@@ -139,7 +143,7 @@ function makePlot3(data, response) {
             .attr("id", d => d.state)
             .attr("cx", d => xScale(d.sun))
             .attr("cy", (d, i) => yScale(d.btu_per_10k))
-            .attr("r", 3);
+            .attr("r", 4);
     } else {
 
         plot.selectAll(".rects").remove();
@@ -158,7 +162,7 @@ function makePlot3(data, response) {
             .attr("id", d => d.state)
             .attr("cx", d => xScale(d.sun))
             .attr("cy", (d, i) => yScale(d.btu_per_10k))
-            .attr("r", 3);
+            .attr("r", 4);
 
     }
 
@@ -194,18 +198,16 @@ function makePlot3(data, response) {
     ***** FITTED LINE *****
     **********************/
 
-    // regression done in R: log(btu_per_10k) = -2.6330 + 0.3649(avg_sun)
+    // OLS estimated in R: log(btu_per_10k) = -2.6330 + 0.3649(avg_sun)
     // just need a straight line with x, y following this formula
-
-    // code for appending line adapted from
-    // https://stackoverflow.com/questions/25418333/how-to-draw-straight-line-in-d3-js-horizontally-and-vertically
-
-    const xMin = d3.extent(data, d => d.sun)[0];
-    const xMax = d3.extent(data, d => d.sun)[1];
-
     function fitY(x) {
         return Math.pow(10, (-2.633 + (0.3649 * x)));
     };
+
+    // code for appending line adapted from
+    // https://stackoverflow.com/questions/25418333/how-to-draw-straight-line-in-d3-js-horizontally-and-vertically
+    const xMin = d3.extent(data, d => d.sun)[0];
+    const xMax = d3.extent(data, d => d.sun)[1];
 
     plot.append("line")
         .attr("class", "regressionLine")
@@ -249,4 +251,41 @@ function makePlot3(data, response) {
         .attr("x", margin.left)
         .attr("y", height - 15)
         .attr("text-anchor", "start");
+
+    /******************
+    ***** LEGEND  *****
+    ******************/
+
+    // code below adapted from examples at https://d3-legend.susielu.com/
+
+    var colorScale = d3.scaleOrdinal()
+        .domain(["Northeast", "North Central, South & West"])
+        .range(["rgb(93,43,240)", "rgb(221,221,221)"]);
+
+    if (response.direction === "down") {
+        // create new color legend
+        svg.append("g")
+            .attr("class", "colorLegend")
+            .attr("transform", `translate(${margin.left}, ${1.5 * margin.top})`);
+
+        var legend = d3.legendColor()
+            .title("Region")
+            .scale(colorScale);
+
+        svg.select(".colorLegend")
+            .call(legend)
+            .attr("opacity", 0)
+            .transition()
+            .duration(DURATION)
+            .attr("opacity", 1);
+    } else {
+        // move color legend back to original position
+        svg.select(".colorLegend")
+            .transition()
+            .duration(DURATION)
+            .attr("transform", `translate(${margin.left}, ${1.5 * margin.top})`);
+    }
+
+
+
 }

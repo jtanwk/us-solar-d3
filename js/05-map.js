@@ -49,6 +49,11 @@ function makePlot5(data) {
         var max = -Infinity;
         var min = Infinity;
         for (var i = 0; i < data.length; i++) {
+
+            if (data[i].properties.sun <= 0) {
+                continue;
+            }
+
             max = Math.max(data[i].properties[key], max);
             min = Math.min(data[i].properties[key], min);
         }
@@ -63,7 +68,7 @@ function makePlot5(data) {
     var colorScale = d3.scaleLinear()
         .domain(colorDomain)
         .interpolate(d3.interpolateHcl)
-        .range([(THEME_PURPLE), (THEME_ORANGE)]);
+        .range([THEME_PURPLE, THEME_ORANGE]);
 
     // circle area scale
     var areaDomain = computeDomain(data.features, 'panels_per_10k');
@@ -88,6 +93,7 @@ function makePlot5(data) {
         .data(data.features)
         .enter()
         .append("path")
+        .filter(function(d) {return d.properties.postal != "AK";})
         .attr("d", path);
 
     /*************************
@@ -112,6 +118,7 @@ function makePlot5(data) {
         .enter()
         .append("circle")
         .filter(function(d) {return !isNaN(getCentroid(d)[0]);})
+        .filter(function(d) {return d.properties.sun > 0;})
         .attr("class", "centroid")
         .attr("id", d => d.properties.GEOID)
         .attr("cx", d => getCentroid(d)[0])
@@ -170,4 +177,49 @@ function makePlot5(data) {
         .attr("y", height - 15)
         .attr("text-anchor", "start")
         .attr("class", "captionText")
+
+
+    /************************
+    ***** COLOR LEGEND  *****
+    ************************/
+
+    // code below adapted from examples at https://d3-legend.susielu.com/
+    // colorScale already defined above
+
+    svg.append("g")
+        .attr("class", "colorLegend")
+        .attr("transform", `translate(${margin.left}, ${1.05 * plotHeight})`);
+
+    var colorLegend = d3.legendColor()
+        .shapeWidth(40)
+        .shapeHeight(7)
+        .title("Avg. Solar Irradiance (kWh/m2/day)")
+        .scale(colorScale)
+        .orient("horizontal");
+
+    svg.select(".colorLegend")
+        .call(colorLegend)
+        .attr("opacity", 0);
+
+    /***********************
+    ***** SIZE LEGEND  *****
+    ***********************/
+
+    svg.append("g")
+        .attr("class", "sizeLegend")
+        .attr("transform", `translate(${margin.left}, ${0.90 * plotHeight})`);
+
+    var sizeLegend = d3.legendSize()
+        .shape("circle")
+        .title("Solar Panels (per 10K pop.)")
+        .shapePadding(25)
+        .labelOffset(15)
+        .scale(areaScale)
+        .orient("horizontal");
+
+    svg.select(".sizeLegend")
+        .call(sizeLegend)
+        .attr("opacity", 0);
+
+
 }

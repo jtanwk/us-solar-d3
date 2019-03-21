@@ -64,6 +64,13 @@ function makePlot2(data, response) {
             .duration(0.5 * DURATION)
             .attr("opacity", 0)
             .remove();
+
+        // remove color legend
+        svg.select(".colorLegend")
+            .transition()
+            .duration(0.5 * DURATION)
+            .attr("opacity", 0)
+            .remove();
     }
 
     /*************************
@@ -178,6 +185,11 @@ function makePlot2(data, response) {
             .attr("cy", (d, i) => yScale(i))
             .attr("cx", d => xScale(d.dev_fr_median));
     } else {
+        plot
+            .transition()
+            .duration(DURATION)
+            .attr("transform", `translate(0, ${margin.top})`);
+
         plot.selectAll(".points")
             .data(data, key)
             .transition()
@@ -190,7 +202,8 @@ function makePlot2(data, response) {
                 }
             })
             .attr("cy", (d, i) => yScale(i))
-            .attr("cx", d => xScale(d.dev_fr_median));
+            .attr("cx", d => xScale(d.dev_fr_median))
+            .attr("r", 3);
     }
 
 
