@@ -287,6 +287,11 @@ p {
     stroke-width: 1px;
 }
 
+/* Map - mousover highlight */
+.map path:hover {
+    fill: limegreen;
+}
+
 /* Map - selected points */
 .selectedPoint {
     stroke: #000000;

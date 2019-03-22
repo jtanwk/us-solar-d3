@@ -282,7 +282,7 @@ function makePlot4(data, response) {
                             return "rects grey";
                         }
                     });
-                    
+
                 // hide tooltip
                 div.style("opacity", 0);
             })
