@@ -273,6 +273,13 @@ p {
     stroke-width: 0;
 }
 
+/* Bar chart - selected bars */
+.selectedRect {
+    stroke: #000000;
+    stroke-width: 1.5px;
+    fill: #FF810F;
+}
+
 /* Map formatting */
 .map path {
     fill: #FFFFFF;

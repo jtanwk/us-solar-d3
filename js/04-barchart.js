@@ -123,6 +123,13 @@ function makePlot4(data, response) {
     ***** BARS *****
     ***************/
 
+    // Define div container for mouseover tooltips
+    // Adapted from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+    var div = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .attr("opacity", 0);
+
     const plot = svg.select("#plot");
 
     plot
@@ -177,6 +184,37 @@ function makePlot4(data, response) {
                     return 0;
                 }
             })
+            .on("mouseenter", function(d) {
+                // highlight bars
+                d3.select(this).attr("class", "rects selectedRect");
+
+                function formatNum(num) {
+                    if (num >= 1) {return num.toFixed(1);}
+                    else {return num.toPrecision(2);}
+                };
+
+                // make tooltip visible
+                div.style("opacity", 0.9)
+                    .html(`<strong>${d.state}</strong> <br />
+                        ${formatNum(d.panels_per_10k)} solar panels <br />
+                        per 10,000 residents`)
+                    .style("left", `${d3.event.pageX+20}px`)
+                    .style("top", `${d3.event.pageY-50}px`);
+            })
+            .on("mouseleave", function(d) {
+                // return to original color
+                d3.select(this)
+                    .attr("class", function(d) {
+                        if (d.region == "Northeast") {
+                            return "rects purple";
+                        } else {
+                            return "rects grey";
+                        }
+                    });
+
+                // hide tooltip
+                div.style("opacity", 0);
+            })
             .transition()
             .delay(DURATION)
             .duration(DURATION)
@@ -218,6 +256,35 @@ function makePlot4(data, response) {
                 } else {
                     return yScale(d.panels_per_10k);
                 }
+            })
+            .on("mouseenter", function(d) {
+                d3.select(this).attr("class", "rects selectedRect");
+
+                function formatNum(num) {
+                    if (num >= 1) {return num.toFixed(1);}
+                    else {return num.toPrecision(2);}
+                };
+
+                // make tooltip visible
+                div.style("opacity", 0.9)
+                    .html(`<strong>${d.state}</strong> <br />
+                        ${formatNum(d.panels_per_10k)} solar panels <br />
+                        per 10,000 residents`)
+                    .style("left", `${d3.event.pageX+20}px`)
+                    .style("top", `${d3.event.pageY-50}px`);
+            })
+            .on("mouseleave", function(d) {
+                d3.select(this)
+                    .attr("class", function(d) {
+                        if (d.region == "Northeast") {
+                            return "rects purple";
+                        } else {
+                            return "rects grey";
+                        }
+                    });
+                    
+                // hide tooltip
+                div.style("opacity", 0);
             })
             .attr("width", xBandScale.bandwidth())
             .attr("height", d => {
