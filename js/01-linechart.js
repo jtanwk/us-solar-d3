@@ -118,8 +118,19 @@ function makePlot1(data, response) {
     }
 
     // Append g to hold lines
-    const plot = svg.select("#plot")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    if (response.direction === "down") {
+
+        var plot = svg.select("#plot")
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    } else {
+        var plot = svg.select("#plot");
+
+        plot.transition()
+            .duration(DURATION)
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    }
+
 
     // Plot lines
     function getYScaleFn(yObj) {

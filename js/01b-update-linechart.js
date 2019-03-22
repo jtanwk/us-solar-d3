@@ -46,8 +46,8 @@ function updatePlot1(data, response) {
     ***** LINES *****
     *****************/
 
-    var plot = svg.select("#plot")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    var plot = svg.select("#plot");
+        // .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     var solarLabels = [
         "Solar, Utility",

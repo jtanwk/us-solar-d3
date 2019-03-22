@@ -152,6 +152,7 @@ h2 {
     font-family: sans-serif;
 }
 
+/* Outro section titles */
 h3 {
     font-family: "Asap SemiBold";
     font-size: 16px;
@@ -282,6 +283,7 @@ p {
 /* Map - selected points */
 .selectedPoint {
     stroke: #000000;
+    stroke-width: 1.5px;
 }
 
 /* Map - tooltip box */
@@ -290,8 +292,6 @@ div.tooltip {
     text-align: center;
     dominant-baseline: central;
 
-    /* width: 16px; */
-    /* height: 16px; */
     padding: 5px;
 
     font-family: "Asap";

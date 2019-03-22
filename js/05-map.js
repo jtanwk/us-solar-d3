@@ -140,8 +140,8 @@ function makePlot5(data) {
             d3.select(this).attr("class", "centroid selectedPoint");
 
             // make tooltip visible
-            div.attr("opacity", 0.9)
-                .html(`${d.properties.county_name}, ${d.properties.postal}
+            div.style("opacity", 0.9)
+                .html(`<strong>${d.properties.county_name}, ${d.properties.postal}</strong>
                     <br /> ${Math.floor(d.properties.panels_per_10k)}
                     solar panels <br /> per 10,000 residents`)
                 .style("left", `${d3.event.pageX+20}px`)
@@ -154,7 +154,7 @@ function makePlot5(data) {
             d3.select(this).attr("class", "centroid");
 
             // hide tooltip
-            div.attr("opacity", 0);
+            div.style("opacity", 0);
 
         });
 
