@@ -1,15 +1,12 @@
 {
   "name": "jonathan-tan-interactive-portfolio",
   "version": "1.0.0",
-  "description": "",
+  "description": "An visual exploration of residential solar panel adoption in the US.",
   "main": "script.js",
   "scripts": {
-    "start": "live-server",
-    "lint": "eslint ."
+    "start": "live-server"
   },
   "dependencies": {
-    "eslint": "^3.13.1",
-    "eslint-config-uber-es2015": "^3.0.1",
     "live-server": "^0.7"
   },
   "author": "",
