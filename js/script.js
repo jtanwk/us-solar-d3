@@ -146,7 +146,7 @@ function scroll_init() {
 	// setup the scrollama instance and bind scrollama event handlers
 	scroller
 		.setup({
-			container: '#scroll', // our outermost scrollytelling element
+			container: document.querySelector('#scroll'), // our outermost scrollytelling element
 			graphic: '.scroll__graphic', // the graphic
 			text: '.scroll__text', // the step container
 			step: '.scroll__text .step', // the step elements
